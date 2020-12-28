@@ -6,9 +6,11 @@
             <!-- insert reference number below -->
                 <h2>Thank you for your order!</h2>
                 <h6 style="display:inline;">Order Reference No: </h6>
-                <h2 style="display:inline;"><span class="badge badge-primary"><?php echo $newOrder['reference_number']; ?></span></h2>
+                <h2 style="display:inline;"><span class="badge badge-primary"><?php echo $_SESSION['refNo']; ?></span></h2>
                 <hr>
                 <p>Your order has been placed. You may visit our <a href="<?php echo base_url(); ?>">home page</a> to track your order using your <b>order reference number</b>.</p>
                 <p>Cancelling your order? please contact our staff by dialling "0" from our provided telephone.</p>
             </div>
         </div>
+        <!-- comment from local latest -->
+        
