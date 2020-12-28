@@ -43,12 +43,12 @@
                 $promoCode = $oD['promo_code'];
                 $menuAmt = number_format($oD['menu_amt'],2);
                 $discountVal = $oD['promo_amt']; // Order Discount
-                $totalAmt = number_format($oD['total_amount'],2); //Order Total
+                $totalAmt = $oD['total_amount']; //Order Total
                 $discountedAmt;
                 break 1;
             }
             if (isset($promoCode)&& strlen($promoCode)>1){
-                $discountedAmt = number_format($totalAmt-$discountVal,2);
+                $discountedAmt = $totalAmt-$discountVal;
             }
             
             // // status color variables
@@ -100,11 +100,11 @@
                                 <li class="list-group-item">Delivered at: <?php echo $dateDelivered; ?></li>
                                 <?php endif  ?>
 
-                                <li class="list-group-item">Subtotal: <?php echo "₱".$totalAmt; ?></li>
+                                <li class="list-group-item">Subtotal: <?php echo "₱".number_format($totalAmt,2); ?></li>
 
                                 <?php if (isset($promoCode)&&(strlen($promoCode)>0)) : ?>
                                 <li class="list-group-item">Discount: <?php echo "₱".$discountVal." (".$promoCode.")"; ?></li>
-                                <li class="list-group-item"><h5>Total Amount: <?php echo "₱".$discountedAmt; ?></h5></li>
+                                <li class="list-group-item"><h5>Total Amount: <?php echo "₱".number_format($discountedAmt,2); ?></h5></li>
                                 <?php else :  ?>
                                 <li class="list-group-item"><h5>Total Amount: <?php echo "₱".$totalAmt; ?></h5></li>
                                 <?php endif  ?>
