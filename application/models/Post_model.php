@@ -158,11 +158,33 @@ class Post_model extends CI_Model{
         // executes insert query
         $this->db->insert('orders_tb', $data);
 
-        //save ordered items
         
         // returns the latest row saved in orders_tb from above
         $insertedOrderId = $this->db->insert_id();
         $getOrderQuery = $this->db->get_where('orders_tb', array('order_id'=>$insertedOrderId));
+
+        //save ordered items
+        $tempSession = $_SESSION['token'];
+        $selectBagItemsQuery = $this->db->query("SELECT 
+            cart_list_tb.menu_id,
+            food_menu_tb.amount,
+            cart_list_tb.qty
+            from cart_list_tb
+            left join food_menu_tb
+            on cart_list_tb.menu_id = food_menu_tb.menu_id WHERE token = '$tempSession'");
+        
+        foreach($selectBagItemsQuery->result_array() as $sbiq) 
+        {
+            $dataBag = array(
+                'menu_amt' => $sbiq['amount'],
+                'menu_id' => $sbiq['menu_id'],
+                'order_id' => $insertedOrderId,
+                'quantity' => $sbiq['qty']
+            );
+            $this->db->insert('ordered_items_tb', $dataBag);
+        } 
+
+
         return $getOrderQuery->result_array();
 
     }
