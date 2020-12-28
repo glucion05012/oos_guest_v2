@@ -131,16 +131,21 @@ class Post_model extends CI_Model{
             $checkinVal = 1;
         }        
 
-        //gets the PROMO code's latest discount value and sets it to a variable
-        $getPromoQuery = $this->db->get_where('promo_codes_tb', array('promo_code'=>$this->input->post('promo_code')));
-        $promoRow = $getPromoQuery->row();
-    
+        if($this->input->post('promo_code')==""){
+            $promocodeVal = "";
+        }else{
+            //gets the PROMO code's latest discount value and sets it to a variable
+            $getPromoQuery = $this->db->get_where('promo_codes_tb', array('promo_code'=>$this->input->post('promo_code')));
+            $promoRow = $getPromoQuery->row();
+            $promocodeVal = $promoRow->amount;
+        }
+
         $data = array(
             'datetime_ordered' =>$date_log,
             'notes' => $this->input->post('orderNotes'),
             'total_amount' => $this->input->post('subtotal'),
             'promo_code' => $this->input->post('promo_code'),
-            'promo_amt' => $promoRow->amount,
+            'promo_amt' => $promocodeVal,
             'order_status' => "PLACED",
             'name' => $this->input->post('customerName'),
             'contact' => $this->input->post('contactNumber'),
@@ -153,16 +158,12 @@ class Post_model extends CI_Model{
         // executes insert query
         $this->db->insert('orders_tb', $data);
 
-
         //save ordered items
         
-
         // returns the latest row saved in orders_tb from above
         $insertedOrderId = $this->db->insert_id();
         $getOrderQuery = $this->db->get_where('orders_tb', array('order_id'=>$insertedOrderId));
-        return $getOrderQuery->row_array();
-
-
+        return $getOrderQuery->result_array();
 
     }
         

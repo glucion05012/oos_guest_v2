@@ -38,7 +38,7 @@
             </div>
         </header>
         <main>
-            <form class="create-form" action="<?= base_url('post-order'); ?>" method="post" accept-charset="utf-8">
+            <form class="create-form" action="<?= base_url('items/checkout'); ?>" method="post" accept-charset="utf-8">
                 <div class="container-fluid my-3">
                     <div class="row" style="margin-bottom:20px;">
                         <div class="col-10 col-md-10 mx-auto">

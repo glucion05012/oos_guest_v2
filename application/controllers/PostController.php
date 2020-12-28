@@ -44,19 +44,28 @@ class PostController extends CI_Controller {
 	public function checkout()
 	{
 		//$data['getBranches'] =  $this->post_model->getBranches();// for branch selection
-		$data['getPromoCode'] =  $this->post_model->checkPromoCode();// do not remove
-		$data['food_uncatmenu_tb'] =  $this->post_model->getMenuItems();
-		$data['getCart'] =  $this->post_model->getCart();
+		$this->form_validation->set_rules("subtotal","subtotal","required");
+		if($this->form_validation->run() === FALSE){
+			$data['getPromoCode'] =  $this->post_model->checkPromoCode();// do not remove
+			$data['food_uncatmenu_tb'] =  $this->post_model->getMenuItems();
+			$data['getCart'] =  $this->post_model->getCart();
 
-		$this->load->view('templates/header', $data);
-		$this->load->view('checkout');
-		$this->load->view('templates/footer');
-		$this->load->view('js/checkout');
+			$this->load->view('templates/header', $data);
+			$this->load->view('checkout');
+			$this->load->view('templates/footer');
+			$this->load->view('js/checkout');
+		}else{
+			$data['refNo'] = $this->post_model->newOrder();
+			$referenceNo = json_encode($data['refNo'][0]['reference_number']);
+			$_SESSION['refNo'] =  trim($referenceNo, '"');
+			redirect("post-order");
+			//echo $referenceNo;
+		}
+		
 		// echo json_encode($data['getPromoCode']);category
 	}
 	public function postOrderPage(){
 		$data['getPromoCode'] =  $this->post_model->checkPromoCode();// do not remove
-		$data['newOrder'] = $this->post_model->newOrder();
 
 		// echo json_encode($data['newOrder']);
 		
