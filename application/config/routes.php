@@ -18,6 +18,6 @@ $route['test'] = 'PostController/test';
 
 $route['add_cart'] = 'PostController/add_cart';
 $route['check_promo'] = 'PostController/check_promo';
+$route['update_Bag_Item'] = 'PostController/updateBagItemQty';
 $route['post-order'] = 'PostController/postOrderPage';
-
 $route['items/remove/(:any)'] = 'PostController/item_remove/$1';

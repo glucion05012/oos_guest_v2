@@ -109,9 +109,7 @@ class Post_model extends CI_Model{
     public function newOrder(){
 
         //saving orders and ordered menu
-
         //randomize 6 char string for ref id
-
         $str_result = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ'; 
         $refNo = substr(str_shuffle($str_result), 0, 6);
         while($this->checkRefNoExist($refNo)){
@@ -121,7 +119,7 @@ class Post_model extends CI_Model{
 
         // gets date
         date_default_timezone_set('Asia/Manila');
-        $date_log = date('F j, Y g:i:a  ');
+        $date_log = date("Y-m-d H:i:s");
 
         // sets value to checkbox. 0 if checked, 1 if unchecked
         $checkinVal;
@@ -140,7 +138,27 @@ class Post_model extends CI_Model{
             $promocodeVal = $promoRow->amount;
         }
 
-        $data = array(
+        
+        //Collects ordered items
+        $tempSession = $_SESSION['token'];
+        $selectBagItemsQuery = $this->db->query("SELECT 
+            food_menu_tb.name,
+            cart_list_tb.menu_id,
+            food_menu_tb.amount,
+            cart_list_tb.qty,
+            food_menu_tb.quantity
+            from cart_list_tb
+            left join food_menu_tb
+            on cart_list_tb.menu_id = food_menu_tb.menu_id WHERE token = '$tempSession'");
+
+        //check qty 
+        foreach($selectBagItemsQuery->result_array() as $sbiq) {
+            if ($sbiq['qty'] > $sbiq['quantity']){
+                return FALSE;
+            }
+        }
+
+        $orderData = array(
             'datetime_ordered' =>$date_log,
             'notes' => $this->input->post('orderNotes'),
             'total_amount' => $this->input->post('subtotal'),
@@ -154,25 +172,16 @@ class Post_model extends CI_Model{
             'branch_id' => $_SESSION['selectedBranch'],
             'reference_number' => $refNo
         );
-  
         // executes insert query
-        $this->db->insert('orders_tb', $data);
+        $this->db->insert('orders_tb', $orderData);
 
         
         // returns the latest row saved in orders_tb from above
         $insertedOrderId = $this->db->insert_id();
         $getOrderQuery = $this->db->get_where('orders_tb', array('order_id'=>$insertedOrderId));
 
-        //save ordered items
-        $tempSession = $_SESSION['token'];
-        $selectBagItemsQuery = $this->db->query("SELECT 
-            cart_list_tb.menu_id,
-            food_menu_tb.amount,
-            cart_list_tb.qty
-            from cart_list_tb
-            left join food_menu_tb
-            on cart_list_tb.menu_id = food_menu_tb.menu_id WHERE token = '$tempSession'");
         
+        //insert each ordered items 
         foreach($selectBagItemsQuery->result_array() as $sbiq) 
         {
             $dataBag = array(
@@ -188,6 +197,15 @@ class Post_model extends CI_Model{
         return $getOrderQuery->result_array();
 
     }
-        
+    public function updateBagItemQty(){
+//$_POST["promoCode"]
+        $qty = $this->input->post('inputQty');
+        $currentToken = $_SESSION['token'];
+        $currentMenuId = $this->input->post('menuid');
+
+        $query = $this->db->query("UPDATE cart_list_tb set qty = '$qty'
+        WHERE token = '$currentToken' AND menu_id = '$currentMenuId'");
+
+    }
 }
 ?>
