@@ -189,7 +189,7 @@
                                                         </div>
                                                     </div>
                                                     <div class='p-2 bd-highlight addtocartcardcolumn'>
-                                                        <button type='submit' class='btn btn-sm btn-addtocart'data-toggle='tooltip' data-placement='top' title='Add to bag' id='addtocart'>
+                                                        <button type='submit' class='btn btn-sm btn-addtocart'data-toggle='tooltip' data-placement='top' title='Add to tray' id='addtocart'>
                                                             <i class='fas fa-shopping-bag btn-fa-shopping-bag fa-sm'></i>
                                                         </button>
                                                     </div>

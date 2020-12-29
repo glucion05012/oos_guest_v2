@@ -43,6 +43,7 @@ class PostController extends CI_Controller {
 	}
 	public function checkout()
 	{
+
 		//$data['getBranches'] =  $this->post_model->getBranches();// for branch selection
 		$this->form_validation->set_rules("subtotal","subtotal","required");
 		if($this->form_validation->run() === FALSE){
@@ -52,17 +53,24 @@ class PostController extends CI_Controller {
 
 			$this->load->view('templates/header', $data);
 			$this->load->view('checkout');
+			$this->load->view('js/alerts');
 			$this->load->view('templates/footer');
 			$this->load->view('js/checkout');
+			
 		}else{
+			// place order
+			
 			$data['refNo'] = $this->post_model->newOrder();
-			$referenceNo = json_encode($data['refNo'][0]['reference_number']);
-			$_SESSION['refNo'] =  trim($referenceNo, '"');
-			redirect("post-order");
-			//echo $referenceNo;
+			if ($data['refNo'] == FALSE){
+				$this->session->set_flashdata('errormsg', 'Ordered quantity cannot be larger than the available quantity. Please check your items!');
+				$url = $_SERVER['HTTP_REFERER'];
+                redirect($url);
+			}else{
+				$referenceNo = json_encode($data['refNo'][0]['reference_number']);
+				$_SESSION['refNo'] =  trim($referenceNo, '"');
+				redirect("post-order");
+			}
 		}
-		
-		// echo json_encode($data['getPromoCode']);category
 	}
 	public function postOrderPage(){
 		$data['getPromoCode'] =  $this->post_model->checkPromoCode();// do not remove
@@ -86,7 +94,7 @@ class PostController extends CI_Controller {
 
 	public function add_cart(){
 		$this->post_model->addCart();
-		$this->session->set_flashdata('successmsg', 'Item Added to Bag');
+		$this->session->set_flashdata('successmsg', 'Item Added to tray');
 			
 		$url = $_SERVER['HTTP_REFERER'];
 		redirect($url);
@@ -102,6 +110,13 @@ class PostController extends CI_Controller {
 		
 		$url = $_SERVER['HTTP_REFERER'];
             redirect($url);
+	}
+
+	public function updateBagItemQty(){
+		$this->post_model->updateBagItemQty();
+		// echo $_POST['menuid'];
+		// echo $_POST['inputQty'];
+		// echo $_SESSION['token'];
 	}
 
 	public function trackOrder(){

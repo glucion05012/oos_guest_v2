@@ -1,5 +1,28 @@
 <script>
 $(document).ready(function(){
+
+    <?php foreach ($getCart as $gct): ?>
+        var menuInput = document.getElementById("inputQty-" + "<?php echo $gct['menu_id'];?>");
+        var menuIdInput = document.getElementById("menu_id-" + "<?php echo $gct['menu_id'];?>");
+        <?php if($_SESSION['token'] == $gct['token']): ?>
+            
+            if(typeof(menuInput) != "undefined" && menuInput !== null) {
+                $(menuInput).change(function(){
+                    var qty = $(menuInput).val();
+                    var menu_id = $(menuIdInput).val();
+                    $.ajax({
+                        url:"<?php echo base_url(); ?>update_Bag_Item",
+                        method:"POST",
+                        dataType:'JSON',
+                        data:{inputQty:qty,
+                        menuid:menu_id}
+                    });
+                    return false;
+                });
+            }
+        <?php endif; ?>
+    <?php endforeach; ?>  
+
     $('.apply_promo').click(function(){
         var promoCode = $('#promo_code').val();
 
