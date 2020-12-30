@@ -41,14 +41,14 @@
             <form class="create-form" action="<?= base_url('items/checkout'); ?>" method="post" accept-charset="utf-8">
                 <div class="container-fluid my-3">
                     <div class="row" style="margin-bottom:20px;">
-                        <div class="col-10 col-md-10 mx-auto">
+                        <div class="col-10 col-md-10 col-lg-9 mx-auto">
                             <!-- ks row container for items section header -->
                             <div class="row px-0">
                                 <div class="col-12">
                                     <div class="checkoutstepsheader">
                                         <h5>1. Order Summary</h5>
                                     </div>
-                                    <div class="row px-0">
+                                    <div class="row">
                                         <div class="col-12 mx-auto col-sm-3 checkoutImgCol tableRowHeader">
                                             <h6 class="mx-auto">Image</h6>
                                         </div>
@@ -94,7 +94,7 @@
                                                     echo "
                                                     <div class='row'>
                                                         <div class='col-12'>
-                                                            <div class='row itemRow px-0'>
+                                                            <div class='row itemRow'>
                                                                 <div class='col-12 col-sm-3 checkoutImgCol mx-auto'>
                                                                     <img class='img-thumbnail checkout-item-img my-2' src='$image' alt=''>
                                                                 </div>
