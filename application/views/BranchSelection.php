@@ -11,7 +11,7 @@
                         <div class="input-group-prepend">
                             <label class="input-group-text" for="inputGroupSelect01">Branches</label>
                         </div>
-                        <select class="custom-select" id="selectedBranch" name="selectedBranch" required>
+                        <select class="custom-select" id="selectedBranch" name="selectedBranch"  data-toggle='tooltip' data-placement='top' title='Select a branch here' required>
                             <option selected value="">Click here to choose</option>
                             <?php foreach ($getBranches as $branch) : ?>
                                 <option value="<?php echo $branch['branch_id']; ?>">
@@ -20,8 +20,8 @@
                             <?php endforeach  ?>
                         </select>
                     </div>
-                    <button class="btn s-primary-btn col-12 mb-2" type="submit" name="button">Next</button>
-                    <div class="row" style="text-align:center;">
+                    <button class="btn s-primary-btn col-12 mb-2" type="submit" name="button" data-toggle='tooltip' data-placement='top' title='Proceed to ordering'>Next</button>
+                    <div class="row" style="text-align:center;" data-toggle='tooltip' data-placement='top' title="Check your order's status ">
                         <a class="mx-auto" href="" style="color:white;"
                         data-toggle="modal" data-target="#trackOrderModal">Track my Order</a>  
                     </div>
@@ -53,7 +53,7 @@
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn s-secondary-btn data-dismiss="modal">Cancel</button>
+                            <button type="button" class="btn s-secondary-btn" data-dismiss="modal">Cancel</button>
                             <button type="submit" class="btn s-primary-btn">Track Order</button>
                         </div>
                     </div>
@@ -61,7 +61,7 @@
             </form>
         </div>
         <!-- alert codes begin -->
-        <div class='row p-0 m-0' style="position:fixed;top:15%;width:100%;" >
+        <div class='row p-0 m-0' style="position:fixed;top:20%;width:100%;" >
             <?php if($this->session->flashdata('successmsg')): ?>
                 <div class="alert alert-danger px-5 my-2 mx-auto" role="alert">
                     <!-- <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button> -->

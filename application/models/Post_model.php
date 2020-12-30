@@ -158,6 +158,7 @@ class Post_model extends CI_Model{
             }
         }
 
+        //insert order query
         $orderData = array(
             'datetime_ordered' =>$date_log,
             'notes' => $this->input->post('orderNotes'),
@@ -176,14 +177,13 @@ class Post_model extends CI_Model{
         $this->db->insert('orders_tb', $orderData);
 
         
+        //insert each ordered items 
         // returns the latest row saved in orders_tb from above
         $insertedOrderId = $this->db->insert_id();
         $getOrderQuery = $this->db->get_where('orders_tb', array('order_id'=>$insertedOrderId));
-
-        
-        //insert each ordered items 
         foreach($selectBagItemsQuery->result_array() as $sbiq) 
         {
+            // insert each items to ordered items table using the orderId
             $dataBag = array(
                 'menu_amt' => $sbiq['amount'],
                 'menu_id' => $sbiq['menu_id'],
@@ -191,14 +191,18 @@ class Post_model extends CI_Model{
                 'quantity' => $sbiq['qty']
             );
             $this->db->insert('ordered_items_tb', $dataBag);
-        } 
 
+            // updates branch stocks, subtracts ordered items qty
+            $newQty = $sbiq['quantity'] - $sbiq['qty'];
+            $currentMenuID = $sbiq['menu_id'];
+            $this->db->query("UPDATE food_menu_tb set quantity = '$newQty' WHERE menu_id = '$currentMenuID' ");
+        } 
 
         return $getOrderQuery->result_array();
 
     }
     public function updateBagItemQty(){
-//$_POST["promoCode"]
+        
         $qty = $this->input->post('inputQty');
         $currentToken = $_SESSION['token'];
         $currentMenuId = $this->input->post('menuid');

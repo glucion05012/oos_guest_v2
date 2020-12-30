@@ -41,14 +41,14 @@
             <form class="create-form" action="<?= base_url('items/checkout'); ?>" method="post" accept-charset="utf-8">
                 <div class="container-fluid my-3">
                     <div class="row" style="margin-bottom:20px;">
-                        <div class="col-10 col-md-10 mx-auto">
+                        <div class="col-10 col-md-10 col-lg-9 mx-auto">
                             <!-- ks row container for items section header -->
                             <div class="row px-0">
                                 <div class="col-12">
                                     <div class="checkoutstepsheader">
                                         <h5>1. Order Summary</h5>
                                     </div>
-                                    <div class="row px-0">
+                                    <div class="row">
                                         <div class="col-12 mx-auto col-sm-3 checkoutImgCol tableRowHeader">
                                             <h6 class="mx-auto">Image</h6>
                                         </div>
@@ -94,7 +94,7 @@
                                                     echo "
                                                     <div class='row'>
                                                         <div class='col-12'>
-                                                            <div class='row itemRow px-0'>
+                                                            <div class='row itemRow'>
                                                                 <div class='col-12 col-sm-3 checkoutImgCol mx-auto'>
                                                                     <img class='img-thumbnail checkout-item-img my-2' src='$image' alt=''>
                                                                 </div>
@@ -113,7 +113,7 @@
                                                                             <div class='p-2 bd-highlight checkoutFlexItem tableColumnHeader'>
                                                                                 <h6>Quantity</h6>
                                                                             </div>
-                                                                            <div class='p-2 bd-highlight mx-auto checkoutFlexItem itemTableInfo'>
+                                                                            <div class='p-2 bd-highlight mx-auto checkoutFlexItem itemTableInfo' data-toggle='tooltip' data-placement='top' title='Quantity (Ordered / Available)'>
                                                                                 <input id='inputQty-$menuID' class='inputQty' type='number' name = 'quantity' value = '$qty'  min='1' max='$availableQty' style='width:40px;'> / $availableQty pc(s)
                                                                             </div>
                                                                         </div>
@@ -129,7 +129,7 @@
                                                                             <div class='p-2 bd-highlight checkoutFlexItem tableColumnHeader'>
                                                                                 <h6>Action</h6>
                                                                             </div>
-                                                                            <a class='aremovefrombag mx-auto pt-2' href='remove/$getCartID'><i class='fa fa-trash fa-lg'></i></a>
+                                                                            <a class='aremovefrombag mx-auto pt-2' href='remove/$getCartID' data-toggle='tooltip' data-placement='top' title='Remove from tray'><i class='fa fa-trash fa-lg'></i></a>
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -154,7 +154,7 @@
                                 <div class="row">
                                     <div class="col-12">
                                         <!-- new promo code -->
-                                        <div class="input-group mb-3">
+                                        <div class="input-group mb-3" data-toggle='tooltip' data-placement='top' title='Apply Promo Code'>
                                             <input type="text" class="form-control" placeholder="Promo Code" aria-label="Recipient's username" aria-describedby="button-addon2" id="promo_code" name="promo_code">
                                             <div class="input-group-append">
                                                 <button class="btn s-secondary-btn apply_promo" type="button" id="button-addon2" name='apply_promo'>Apply<i class="ml-2 fas fa-tag"></i></button>
@@ -248,14 +248,14 @@
                         </div>
                     </div>
                     <div class="row mb-5">
-                        <button class="btn s-primary-btn mx-auto btn-lg col-10 col-lg-3 col-md-5" type="submit" name="button" value="placeOrder">Place Order</button>
+                        <button class="btn s-primary-btn mx-auto btn-lg col-10 col-lg-3 col-md-5" type="submit" name="button" value="placeOrder" data-toggle='tooltip' data-placement='top' title='Confirm Order'>Place Order</button>
                     </div>
                 </div>
             </form>
             
         </main>
         <!-- alert codes begin -->
-        <div class='row p-0 m-0' style="position:fixed;top:15%;width:100%;" >
+        <div class='row p-0 m-0' style="position:fixed;top:20%;width:100%;" >
             <?php if($this->session->flashdata('errormsg')): ?>
                 <div class="alert alert-warning px-5 my-2 mx-auto" role="alert">
                     <!-- <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button> -->
