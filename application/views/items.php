@@ -185,7 +185,7 @@
                                                 <div class='d-flex flex-row d-flex justify-content-end bd-highlight mb-3 addtocartcardcontainer'>
                                                     <div class='p-2 bd-highlight addtocartcardcolumn'>
                                                         <div class='input-group input-group-itemcard px-0 input-group-sm mb-3 col-6 float-right'>
-                                                            <input type='number' min='1' name='quantity' class='form-control quantity' value='1' aria-label='Example text with button addon' aria-describedby='button-addon1' required>
+                                                            <input type='number' min='1' name='quantity' class='form-control quantity' value='1' aria-label='Example text with button addon' aria-describedby='button-addon1' data-toggle='tooltip' data-placement='top' title='Quantity to add' required>
                                                         </div>
                                                     </div>
                                                     <div class='p-2 bd-highlight addtocartcardcolumn'>
@@ -217,7 +217,7 @@
         <!-- item cards end -->
 
         <!-- alert codes begin -->
-        <div class='row p-0 m-0' style="position:fixed;top:15%;width:100%;" >
+        <div class='row p-0 m-0' style="position:fixed;top:20%;width:100%;" >
             <?php if($this->session->flashdata('successmsg')): ?>
                 <div class="alert alert-success px-5 my-2 mx-auto" role="alert">
                     <!-- <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button> -->
