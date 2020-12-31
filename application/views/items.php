@@ -151,13 +151,9 @@
             <!-- <div class="row items-container col-12 px-2"> -->
             <div class="card-deck col-lg-10 col-md-10 col-sm-10 col-xl-10 mx-auto">
                 <!-- ks single item card (with container) begin -->
-                <?php foreach ($food_menu_tb as $fmt) : ?>
+                <?php foreach ($food_menu_tb as $fmt){
 
-                    <?php
-                        $branch = explode(',', $fmt['branch_id']);
-                        $branchcnt = count($branch) -2;
-                        for ($i=0; $i <= $branchcnt; $i++) {
-                            if($_SESSION['selectedBranch'] == $branch[$i]){
+                            if($_SESSION['selectedBranch'] == $fmt['branch_id']){
                                 $image = base_url().'assets/food_menu_images/'. $fmt['image'];
                                 $menuID = $fmt['menu_id'];
                                 $name = $fmt['name'];
@@ -200,7 +196,6 @@
                                     
                                 ";
                             } //end if
-                        } //end for
 
                         // $pageWasRefreshed = isset($_SERVER['HTTP_CACHE_CONTROL']) && $_SERVER['HTTP_CACHE_CONTROL'] === 'max-age=0';
 
@@ -208,9 +203,8 @@
                         //     redirect(base_url());
                         // }
 
-                    ?>
-
-                <?php endforeach  ?>
+                    }
+                ?>
                 <!-- single item card (with container) end -->
             </div>
         </main>
