@@ -93,6 +93,7 @@ class PostController extends CI_Controller {
 	}
 
 	public function add_cart(){
+
 		$this->post_model->addCart();
 		$this->session->set_flashdata('successmsg', 'Item Added to tray');
 			
