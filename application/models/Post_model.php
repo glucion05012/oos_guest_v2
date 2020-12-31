@@ -25,22 +25,48 @@ class Post_model extends CI_Model{
         return $query->result_array();
     }
 
+    // public function addCart(){
+    //     date_default_timezone_set('Asia/Manila');
+    //     $date_log = date('F j, Y g:i:a  ');
+
+    //     $data = array(
+    //         'token' =>$this->input->post('token'),
+    //         'branch_id' => $this->input->post('branchid'),
+    //         'menu_id' => $this->input->post('menuid'),
+    //         'qty' => $this->input->post('quantity'),
+    //         'datetime' => $date_log,
+    //     );
+    //     $this->db->insert('cart_list_tb', $data);
+
+    //     return true;
+    // }
     public function addCart(){
-        date_default_timezone_set('Asia/Manila');
-        $date_log = date('F j, Y g:i:a  ');
 
-        $data = array(
-            'token' =>$this->input->post('token'),
-            'branch_id' => $this->input->post('branchid'),
-            'menu_id' => $this->input->post('menuid'),
-            'qty' => $this->input->post('quantity'),
-            'datetime' => $date_log,
-        );
-        $this->db->insert('cart_list_tb', $data);
-
-        return true;
-    }
+        $currentToken = $_SESSION['token'];
+        $currentMenuId = $this->input->post('menuid');
+        $getBagItems = $this->db->query("SELECT * from cart_list_tb 
+        where menu_id = '$currentMenuId' AND token = '$currentToken'");
+        if ($getBagItems->num_rows() > 0){
+            $existingRow = $getBagItems->row_array();
+            $newQty = $existingRow['qty'] + $this->input->post('quantity');
+            $myQuery = $this->db->query("UPDATE cart_list_tb set qty = '$newQty' 
+            WHERE menu_id = '$currentMenuId' AND token = '$currentToken' ");
+        }else{
+            date_default_timezone_set('Asia/Manila');
+            $date_log = date('F j, Y g:i:a  ');
     
+            $dataBagItem = array(
+                'token' =>$this->input->post('token'),
+                'branch_id' => $this->input->post('branchid'),
+                'menu_id' => $this->input->post('menuid'),
+                'qty' => $this->input->post('quantity'),
+                'datetime' => $date_log,
+            );
+            $this->db->insert('cart_list_tb', $dataBagItem);
+        }
+
+         return true;
+    }
     public function getCart(){
         $query = $this->db->get('cart_list_tb');
         return $query->result_array();
