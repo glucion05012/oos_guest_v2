@@ -17,7 +17,8 @@ $(document).ready(function(){
                         data:{inputQty:qty,
                         menuid:menu_id}
                     });
-                    return false;
+                    //return false;
+                    location.reload();
                 });
             }
         <?php endif; ?>

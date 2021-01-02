@@ -235,7 +235,7 @@ class Post_model extends CI_Model{
 
         $query = $this->db->query("UPDATE cart_list_tb set qty = '$qty'
         WHERE token = '$currentToken' AND menu_id = '$currentMenuId'");
-
+        return true;
     }
 }
 ?>
