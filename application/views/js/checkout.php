@@ -58,6 +58,8 @@ $(document).ready(function(){
                     }
 
                     if (validFrom <= today && validTo >= today && branchValid && msg[0].status == 1){
+                        
+                        $("#promo_code_div").css({"border": "none"});
                         //if valid, set value to discount
                         if (msg[0].percent == 0){
                             discount = parseFloat(msg[0].amount);
@@ -66,7 +68,8 @@ $(document).ready(function(){
                         } 
                     }else{
                         // invalid promo code
-                    $("#promo_code_div").css({"border": "solid 2px red"});
+                        $("#promo_code_div").css({"border": "solid 2px red"});
+                        alert('The promo code you have entered is either expired, deactivated, or not applicable at this branch.');
                     }
                     
                     $('#discount').text("₱ " + discount.toFixed(2));
@@ -95,6 +98,7 @@ $(document).ready(function(){
                     $('#total').text("₱ " + subtotal);
                     $('#promo_code').val('');
                     $("#promo_code_div").css({"border": "solid 2px red"});
+                    alert('The promo code you have entered is not valid.');
                 }
 
             }
@@ -105,12 +109,12 @@ $(document).ready(function(){
 
 
         $('#checkedIn').change(function() {
-        if(this.checked) {
-            $( "#roomNumber" ).prop( "readonly", false);
-        }else{
-            $( "#roomNumber" ).prop( "readonly", true);
-            $( "#roomNumber" ).val("");
-        }
+            if(this.checked) {
+                $( "#roomNumber" ).prop( "readonly", false);
+            }else{
+                $( "#roomNumber" ).prop( "readonly", true);
+                $( "#roomNumber" ).val("");
+            }
 
     });
 </script>
