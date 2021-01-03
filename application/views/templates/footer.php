@@ -103,7 +103,7 @@
             //             var validTo = new Date("<?php echo $pcode['valid_to']; ?>");
             //             validTo = (validTo.getMonth() + 1) + '/' + validTo.getDate() + '/' + validTo.getFullYear();
             //             var today = new Date();
-            //             today = (today.getMonth() + 1) + '/' + today.getDate() + '/' + today.getFullYear();
+            //             today = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
             //
             //             if (today >= validFrom && today <= validTo && <?php echo $pcode['status']; ?> == 1){
             //                 alert("valid");

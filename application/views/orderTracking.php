@@ -44,7 +44,7 @@
                 $menuAmt = number_format($oD['menu_amt'],2);
                 $discountVal = $oD['promo_amt']; // Order Discount
                 $totalAmt = $oD['total_amount']; //Order Total
-                $discountedAmt;
+                $discountedAmt = 0;
                 break 1;
             }
             if (isset($promoCode)&& strlen($promoCode)>1){
