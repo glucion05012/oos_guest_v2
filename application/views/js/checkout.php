@@ -17,8 +17,8 @@ $(document).ready(function(){
                         data:{inputQty:qty,
                         menuid:menu_id}
                     });
-                    //return false;
                     location.reload();
+                    return false;
                 });
             }
         <?php endif; ?>
@@ -37,14 +37,45 @@ $(document).ready(function(){
                 var len = msg.length;
                 $('#discount').text('');
                 if(len > 0){
-                    // Read values
 
-                    var discount = msg[0].amount;
-                    $('#discount').text("₱ " + discount);
-                    $('#inDiscount').text(discount);
+                    //check validity
+                    var validFrom = Date.parse(msg[0].valid_from);
+                    var validTo = Date.parse(msg[0].valid_to);
+                    var today = new Date();
+                    today = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
+                    today = Date.parse(today);
+                    // Read values
                     
+                    var discount = 0;
                     var subtotal = parseFloat($('#subtotal').val());
-                    discount = parseFloat(discount);
+
+                    var branchValid = false;
+                    var branchesArr = msg[0].branch_id.split(',');
+                    for(i = 0; i <= branchesArr.length-2; i++){
+                        if (branchesArr[i] == <?php echo $_SESSION['selectedBranch'];?>){
+                            branchValid = true;
+                        }
+                    }
+
+                    if (validFrom <= today && validTo >= today && branchValid && msg[0].status == 1){
+                        
+                        $("#promo_code_div").css({"border": "none"});
+                        //if valid, set value to discount
+                        if (msg[0].percent == 0){
+                            discount = parseFloat(msg[0].amount);
+                        }else{
+                            discount = parseFloat(subtotal * (msg[0].amount * 0.01));
+                        } 
+                    }else{
+                        // invalid promo code
+                        $("#promo_code_div").css({"border": "solid 2px red"});
+                        alert('The promo code you have entered is either expired, deactivated, or not applicable at this branch.');
+                    }
+                    
+                    $('#discount').text("₱ " + discount.toFixed(2));
+                    $('#inDiscount').text(discount.toFixed(2));
+                    
+                    discount = parseFloat(discount.toFixed(2));
                     
                     var total_amt;
                     if(total_amt <= discount){
@@ -63,15 +94,11 @@ $(document).ready(function(){
 
                 }else{
                     var subtotal = $('#subtotal').val();
-                    subtotal = subtotal.toFixed(2).replace(/[^\d.]/g, "")
-                                 .replace(/^(\d*\.)(.*)\.(.*)$/, '$1$2$3')
-                                 .replace(/\.(\d{2})\d+/, '.$1')
-                                 .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 
                     $('#total').text("₱ " + subtotal);
                     $('#promo_code').val('');
-
-                     alert('invalid code');
+                    $("#promo_code_div").css({"border": "solid 2px red"});
+                    alert('The promo code you have entered is not valid.');
                 }
 
             }
@@ -82,12 +109,12 @@ $(document).ready(function(){
 
 
         $('#checkedIn').change(function() {
-        if(this.checked) {
-            $( "#roomNumber" ).prop( "readonly", false);
-        }else{
-            $( "#roomNumber" ).prop( "readonly", true);
-            $( "#roomNumber" ).val("");
-        }
+            if(this.checked) {
+                $( "#roomNumber" ).prop( "readonly", false);
+            }else{
+                $( "#roomNumber" ).prop( "readonly", true);
+                $( "#roomNumber" ).val("");
+            }
 
     });
 </script>

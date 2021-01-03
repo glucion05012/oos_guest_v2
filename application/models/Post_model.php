@@ -155,13 +155,25 @@ class Post_model extends CI_Model{
             $checkinVal = 1;
         }        
 
+        
+        $promoPerCent = 0;
+        $promocodeVal = 0;
+        $promoCode = NULL;
         if($this->input->post('promo_code')==""){
             $promocodeVal = "";
         }else{
             //gets the PROMO code's latest discount value and sets it to a variable
             $getPromoQuery = $this->db->get_where('promo_codes_tb', array('promo_code'=>$this->input->post('promo_code')));
-            $promoRow = $getPromoQuery->row();
-            $promocodeVal = $promoRow->amount;
+            if ($getPromoQuery->num_rows() > 0){
+                $promoRow = $getPromoQuery->row();
+                $promoPerCent = $promoRow->percent;
+                $promocodeVal = $promoRow->amount;
+    
+                if ($promoPerCent == 1){
+                    $undiscounted = $this->input->post('subtotal');
+                    $promocodeVal = $undiscounted * ($promocodeVal * 0.01);
+                }
+            }
         }
 
         
@@ -189,8 +201,9 @@ class Post_model extends CI_Model{
             'datetime_ordered' =>$date_log,
             'notes' => $this->input->post('orderNotes'),
             'total_amount' => $this->input->post('subtotal'),
-            'promo_code' => $this->input->post('promo_code'),
-            'promo_amt' => $promocodeVal,
+            'promo_percent' => $promoPerCent,
+            'promo_code' => $promoCode,
+            'promo_amt' => number_format($promocodeVal,2),
             'order_status' => "PLACED",
             'name' => $this->input->post('customerName'),
             'contact' => $this->input->post('contactNumber'),
