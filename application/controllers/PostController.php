@@ -115,6 +115,8 @@ class PostController extends CI_Controller {
 
 	public function updateBagItemQty(){
 		$this->post_model->updateBagItemQty();
+
+
 		// echo $_POST['menuid'];
 		// echo $_POST['inputQty'];
 		// echo $_SESSION['token'];

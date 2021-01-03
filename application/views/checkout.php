@@ -152,7 +152,7 @@
                                 <div class="row">
                                     <div class="col-12">
                                         <!-- new promo code -->
-                                        <div class="input-group mb-3" data-toggle='tooltip' data-placement='top' title='Apply Promo Code'>
+                                        <div class="input-group mb-3" data-toggle='tooltip' data-placement='top' title='Apply Promo Code' id="promo_code_div">
                                             <input type="text" class="form-control" placeholder="Promo Code" aria-label="Recipient's username" aria-describedby="button-addon2" id="promo_code" name="promo_code">
                                             <div class="input-group-append">
                                                 <button class="btn s-secondary-btn apply_promo" type="button" id="button-addon2" name='apply_promo'>Apply<i class="ml-2 fas fa-tag"></i></button>
@@ -262,4 +262,3 @@
             <?php endif; ?>
         </div>
         <!-- alert codes end -->  
-                                    
