@@ -76,6 +76,18 @@ $(document).ready(function(){
                             discount = parseFloat(subtotal * (msg[0].amount * 0.01));
                         } 
                         $('#discount').text("₱ " + discount.toFixed(2));
+                        
+                        $('#inDiscount').text(discount.toFixed(2));
+                        
+                        discount = parseFloat(discount.toFixed(2));
+                        
+                        var total_amt;
+                        
+                        total_amt = subtotal - discount;
+                        if(total_amt <= discount){
+                            total_amt = 0.00;
+                        }
+
                     }else{
                         // invalid promo code
 
@@ -84,16 +96,6 @@ $(document).ready(function(){
                         $(".promoCodeError").css({"color": "red"})
                     }
                     
-                    $('#inDiscount').text(discount.toFixed(2));
-                    
-                    discount = parseFloat(discount.toFixed(2));
-                    
-                    var total_amt;
-                    if(total_amt <= discount){
-                        total_amt = 0.00;
-                    }
-
-                    total_amt = subtotal - discount;
 
                     total_amt = total_amt.toFixed(2).replace(/[^\d.]/g, "")
                                  .replace(/^(\d*\.)(.*)\.(.*)$/, '$1$2$3')
@@ -105,6 +107,11 @@ $(document).ready(function(){
 
                 }else{
                     var subtotal = $('#subtotal').val();
+
+                    subtotal = parseFloat(subtotal).toFixed(2).replace(/[^\d.]/g, "")
+                                 .replace(/^(\d*\.)(.*)\.(.*)$/, '$1$2$3')
+                                 .replace(/\.(\d{2})\d+/, '.$1')
+                                 .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 
                     $('#total').text("₱ " + subtotal);
                     $('#promo_code').val('');
