@@ -155,25 +155,25 @@ class Post_model extends CI_Model{
             $checkinVal = 1;
         }        
 
-        
+        //gets discount value from promo codes
         $promoPerCent = 0;
         $promocodeVal = 0;
-        $promoCode = NULL;
-        if($this->input->post('promo_code')==""){
-            $promocodeVal = "";
-        }else{
-            //gets the PROMO code's latest discount value and sets it to a variable
-            $getPromoQuery = $this->db->get_where('promo_codes_tb', array('promo_code'=>$this->input->post('promo_code')));
-            if ($getPromoQuery->num_rows() > 0){
-                $promoRow = $getPromoQuery->row();
-                $promoPerCent = $promoRow->percent;
-                $promocodeVal = $promoRow->amount;
-    
-                if ($promoPerCent == 1){
-                    $undiscounted = $this->input->post('subtotal');
-                    $promocodeVal = $undiscounted * ($promocodeVal * 0.01);
-                }
+        
+        $promoCode = $this->input->post('promo_code');
+        $getPromoQuery = $this->db->query("SELECT * from promo_codes_tb where promo_code = '$promoCode'");
+        if ($getPromoQuery->num_rows() > 0){
+            $promoRow = $getPromoQuery->row_array();
+            $promoPerCent = $promoRow['percent'];
+            $promocodeVal = $promoRow['amount'];
+
+            if ($promoPerCent == 1){
+                $undiscounted = $this->input->post('subtotal');
+                $promocodeVal = $undiscounted * ($promocodeVal * 0.01);
             }
+        }else{
+            $promocodeVal = NULL;
+            $promoPerCent = NULL;
+            $promoCode = NULL;
         }
 
         
