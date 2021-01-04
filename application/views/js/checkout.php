@@ -23,6 +23,11 @@ $(document).ready(function(){
             }
         <?php endif; ?>
     <?php endforeach; ?>  
+    
+    $('#promo_code').focusout(function(){
+
+        $('.apply_promo').click();
+    });
 
     $('.apply_promo').click(function(){
         var promoCode = $('#promo_code').val();
@@ -59,20 +64,26 @@ $(document).ready(function(){
 
                     if (validFrom <= today && validTo >= today && branchValid && msg[0].status == 1){
                         
+                        // hide error if valid
                         $("#promo_code_div").css({"border": "none"});
+
                         //if valid, set value to discount
+                        
+                        $(".promoCodeError").text("");
                         if (msg[0].percent == 0){
                             discount = parseFloat(msg[0].amount);
                         }else{
                             discount = parseFloat(subtotal * (msg[0].amount * 0.01));
                         } 
+                        $('#discount').text("₱ " + discount.toFixed(2));
                     }else{
                         // invalid promo code
-                        $("#promo_code_div").css({"border": "solid 2px red"});
-                        alert('The promo code you have entered is either expired, deactivated, or not applicable at this branch.');
+
+                        $(".promoCodeError").text("The promo code you have entered is either expired, deactivated, or not applicable at this branch.");
+                        $('#promo_code').val('');
+                        $(".promoCodeError").css({"color": "red"})
                     }
                     
-                    $('#discount').text("₱ " + discount.toFixed(2));
                     $('#inDiscount').text(discount.toFixed(2));
                     
                     discount = parseFloat(discount.toFixed(2));
@@ -97,8 +108,10 @@ $(document).ready(function(){
 
                     $('#total').text("₱ " + subtotal);
                     $('#promo_code').val('');
-                    $("#promo_code_div").css({"border": "solid 2px red"});
-                    alert('The promo code you have entered is not valid.');
+                    // $("#promo_code_div").css({"border": "solid 2px red"});
+                    $(".promoCodeError").text("The promo code you have entered is invalid.");
+                    $(".promoCodeError").css({"color": "red"})
+                    $('#promo_code').val('');
                 }
 
             }

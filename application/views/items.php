@@ -158,7 +158,7 @@
                                 $menuID = $fmt['menu_id'];
                                 $name = $fmt['name'];
                                 $desc = $fmt['description'];
-                                $amt = $fmt['amount'];
+                                $amt = number_format($fmt['amount'],2);
                                 $token = $_SESSION['token'];
                                 $selectedBranch = $_SESSION['selectedBranch'];
                                 $url = base_url('add_cart');
