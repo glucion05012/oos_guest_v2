@@ -171,9 +171,9 @@ class Post_model extends CI_Model{
                 $promocodeVal = $undiscounted * ($promocodeVal * 0.01);
             }
         }else{
-            $promocodeVal = NULL;
-            $promoPerCent = NULL;
-            $promoCode = NULL;
+            $promocodeVal = '';
+            $promoPerCent = '';
+            $promoCode = '';
         }
 
         
@@ -203,7 +203,7 @@ class Post_model extends CI_Model{
             'total_amount' => $this->input->post('subtotal'),
             'promo_percent' => $promoPerCent,
             'promo_code' => $promoCode,
-            'promo_amt' => number_format($promocodeVal,2),
+            'promo_amt' => $promocodeVal,
             'order_status' => "PLACED",
             'name' => $this->input->post('customerName'),
             'contact' => $this->input->post('contactNumber'),
