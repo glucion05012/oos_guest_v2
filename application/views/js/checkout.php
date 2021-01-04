@@ -7,7 +7,7 @@ $(document).ready(function(){
         <?php if($_SESSION['token'] == $gct['token']): ?>
             
             if(typeof(menuInput) != "undefined" && menuInput !== null) {
-                $(menuInput).change(function(){
+                $(menuInput).focusout(function(){
                     var qty = $(menuInput).val();
                     var menu_id = $(menuIdInput).val();
                     $.ajax({
