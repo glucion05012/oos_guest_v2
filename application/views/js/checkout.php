@@ -8,8 +8,10 @@ $(document).ready(function(){
             
             if(typeof(menuInput) != "undefined" && menuInput !== null) {
                 $(menuInput).focusout(function(){
-                    var qty = $(menuInput).val();
-                    var menu_id = $(menuIdInput).val();
+                    
+                    var qty = $("#inputQty-" + "<?php echo $gct['menu_id'];?>").val();
+                    var menu_id = $("#menu_id-" + "<?php echo $gct['menu_id'];?>").val();
+                    
                     $.ajax({
                         url:"<?php echo base_url(); ?>update_Bag_Item",
                         method:"POST",
