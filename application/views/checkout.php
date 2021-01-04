@@ -196,10 +196,10 @@
                                 </div>
                                 <hr>
                                 <div class="row">
-                                    <div class="col">
+                                    <div class="col-5">
                                         <h6>Total Amount:</h6>
                                     </div>
-                                    <div class="col" style="text-align:right;">
+                                    <div class="col-7" style="text-align:right;">
                                         <h3><span id="total">₱ <?php echo number_format($total_amt,2); ?></span></h3>
                                     </div>
                                 </div>
