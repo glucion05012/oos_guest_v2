@@ -2,7 +2,7 @@
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb mb-0">
                 <li class="breadcrumb-item">
-                    <a class="card-link" href="<?php echo base_url(); ?>"><?php echo $getBranch['name']; ?></a>
+                    <a class="card-link" href="<?php echo base_url(); ?>"><?php echo "Branch Selection" ?></a>
                 </li>
                 <li class="breadcrumb-item active" aria-current="page">Order Tracking</li>
             </ol>
