@@ -126,7 +126,6 @@ class PostController extends CI_Controller {
 	}
 
 	public function trackOrder(){
-		$data['getBranch'] = $this->post_model->getBranchName(); //for branch name on breadcrumb
 		$data['getPromoCode'] =  $this->post_model->checkPromoCode();// do not remove
 		$data['getOrderDetails'] = $this->post_model->getOrderDetails();
 		//echo $_POST['orderRefNo'];
