@@ -38,6 +38,7 @@
                 $oStat = $oD['order_status'];
                 $orderedBy = $oD['customerName'];
                 $dateOrdered = $oD['datetime_ordered'];
+                $dateOrdered = date("M j, Y g:i a");  
                 $orderedFrom = $oD['branchName'];
                 $deliverTo = $oD['room_no'];
                 $dateDelivered = $oD['datetime_delivered'];
@@ -78,7 +79,7 @@
                 <div class="row">
                     <div class="col-12 mb-5 mx-auto">
                         <h5>
-                            Order no.: <?php echo $refNo; ?>
+                            Order no: <?php echo $refNo; ?>
                             <span class="badge badge-secondary" <?php echo $cssStyle; ?>><?php echo $oStat; ?></span>
                         </h5>
                         Ordered at <?php echo "<b>".$dateOrdered."</b> from <b>".$orderedFrom. "</b> branch" ; ?>
