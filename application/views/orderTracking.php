@@ -106,25 +106,26 @@
 
                                 <?php if (isset($promoCode)&&(strlen($promoCode)>0)) : ?>
                                     <?php if ($promoPerCent == '1') : ?>
-                                        <li class="list-group-item">Discount: <?php echo number_format($discountVal,2)." (".$promoCode.")"."%"; ?></li>
+                                        <li class="list-group-item">Discount: <?php echo $discountVal."% (".$promoCode.")"; ?></li>
                                     <?php else :  ?>
                                         <li class="list-group-item">Discount: <?php echo "₱".number_format($discountVal,2)." (".$promoCode.")"; ?></li>
                                     <?php endif  ?>
 
-                                <?php
-                                    if($totalAmt <= $discountVal){
-                                        $discountedAmt = '0.00';
-                                    }
-                                ?>
+                                    <?php
+                                        if($totalAmt <= $discountVal){
+                                            $discountedAmt = '0.00';
+                                        }
+                                    ?>
 
+                                    <?php
+                                        if ($promoPerCent == 1){
+                                            $discountVal = $totalAmt * ($discountVal * 0.01);
+                                            $discountedAmt = $totalAmt - $discountVal;
+                                        }
+                                    ?>
                                     <li class="list-group-item"><h5>Total Amount: <?php echo "₱".number_format($discountedAmt,2); ?></h5></li>
                                 <?php else :  ?>
-                                    <?php
-                                    if ($promoPerCent == 1){
-                                        $discountVal = $totalAmt * ($discountVal * 0.01);
-                                        $discountedAmt = $totalAmt - $discountVal;
-                                    }
-                                    ?>
+                                    
                                     <li class="list-group-item"><h5>Total Amount: <?php echo "₱".number_format($totalAmt,2); ?></h5></li>
                                 <?php endif  ?>
                                 
