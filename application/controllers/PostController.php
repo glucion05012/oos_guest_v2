@@ -22,15 +22,17 @@ class PostController extends CI_Controller {
 	}
 	public function category()
 	{
+		$data['getBranch'] = $this->post_model->getBranchName(); //for branch name on breadcrumb
 		$data['getPromoCode'] =  $this->post_model->checkPromoCode();// do not remove
 		//$data['getBranches'] =  $this->post_model->getBranches();// for branch selection
 		$data['food_uncatmenu_tb'] =  $this->post_model->getMenuItems();
 		$this->load->view('templates/header', $data);
-		$this->load->view('home');
+		$this->load->view('home',$data);
 		$this->load->view('templates/footer');
 	}
 	public function items($category)
 	{
+		$data['getBranch'] = $this->post_model->getBranchName(); //for branch name on breadcrumb
 		//$data['getBranches'] =  $this->post_model->getBranches();// for branch selection
 		$data['getPromoCode'] =  $this->post_model->checkPromoCode();// do not remove
 		$data['food_menu_tb'] =  $this->post_model->getCategoryItems($category);
@@ -43,7 +45,7 @@ class PostController extends CI_Controller {
 	}
 	public function checkout()
 	{
-
+		$data['getBranch'] = $this->post_model->getBranchName(); //for branch name on breadcrumb
 		//$data['getBranches'] =  $this->post_model->getBranches();// for branch selection
 		$this->form_validation->set_rules("subtotal","subtotal","required");
 		if($this->form_validation->run() === FALSE){
@@ -52,7 +54,7 @@ class PostController extends CI_Controller {
 			$data['getCart'] =  $this->post_model->getCart();
 
 			$this->load->view('templates/header', $data);
-			$this->load->view('checkout');
+			$this->load->view('checkout',$data);
 			$this->load->view('js/alerts');
 			$this->load->view('templates/footer');
 			$this->load->view('js/checkout');
@@ -73,6 +75,7 @@ class PostController extends CI_Controller {
 		}
 	}
 	public function postOrderPage(){
+		
 		$data['getPromoCode'] =  $this->post_model->checkPromoCode();// do not remove
 
 		// echo json_encode($data['newOrder']);
@@ -123,6 +126,7 @@ class PostController extends CI_Controller {
 	}
 
 	public function trackOrder(){
+		$data['getBranch'] = $this->post_model->getBranchName(); //for branch name on breadcrumb
 		$data['getPromoCode'] =  $this->post_model->checkPromoCode();// do not remove
 		$data['getOrderDetails'] = $this->post_model->getOrderDetails();
 		//echo $_POST['orderRefNo'];
