@@ -46,11 +46,14 @@ $(document).ready(function(){
                 if(len > 0){
 
                     //check validity
-                    var validFrom = Date.parse(msg[0].valid_from);
-                    var validTo = Date.parse(msg[0].valid_to);
+                    var validFrom = new Date(msg[0].valid_from);
+                    var validTo = new Date(msg[0].valid_to);
                     var today = new Date();
-                    today = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
-                    today = Date.parse(today);
+
+                    var validFroms = new Date(msg[0].valid_from).toDateString();
+                    var validTos = new Date(msg[0].valid_to).toDateString();
+                    var todays = new Date().toDateString();
+
                     // Read values
                     
                     var discount = 0;
@@ -64,47 +67,60 @@ $(document).ready(function(){
                         }
                     }
 
-                    if (validFrom <= today && validTo >= today && branchValid && msg[0].status == 1){
-                        
-                        // hide error if valid
-                        $("#promo_code_div").css({"border": "none"});
+                    if (validFrom <= today && validTo >= today || validFroms == todays && validTos == todays){
+                        if(branchValid == true){
+                           
+                            if(msg[0].status == 1){
+                            
+                                // hide error if valid
+                                $("#promo_code_div").css({"border": "none"});
 
-                        //if valid, set value to discount
-                        
-                        $(".promoCodeError").text("");
-                        if (msg[0].percent == 0){
-                            discount = parseFloat(msg[0].amount);
-                        }else{
-                            discount = parseFloat(subtotal * (msg[0].amount * 0.01));
-                        } 
-                        $('#discount').text("₱ " + discount.toFixed(2));
-                        
-                        $('#inDiscount').text(discount.toFixed(2));
-                        
-                        discount = parseFloat(discount.toFixed(2));
-                        
-                        var total_amt;
-                        
-                        total_amt = subtotal - discount;
-                        if(total_amt <= discount){
-                            total_amt = 0.00;
-                        }
+                                //if valid, set value to discount
+                                
+                                $(".promoCodeError").text("");
+                                if (msg[0].percent == 0){
+                                    discount = parseFloat(msg[0].amount);
+                                    $('#discount').text("₱ " + discount.toFixed(2));
+                                }else{
+                                    discount = parseFloat(subtotal * (msg[0].amount * 0.01));
+                                    $('#discount').text(msg[0].amount + "%");
 
-                    }else{
-                        // invalid promo code
+                                } 
+                                
+                                //discount = parseFloat(discount.toFixed(2));
+                                
+                                var total_amt;
+                                
+                                total_amt = subtotal - discount;
+                                if(total_amt <= discount){
+                                    total_amt = 0.00;
+                                }
 
-                        $(".promoCodeError").text("The promo code you have entered is either expired, deactivated, or not applicable at this branch.");
-                        $('#promo_code').val('');
-                        $(".promoCodeError").css({"color": "red"})
-                    }
-                    
-
-                    total_amt = total_amt.toFixed(2).replace(/[^\d.]/g, "")
+                                total_amt = total_amt.toFixed(2).replace(/[^\d.]/g, "")
                                  .replace(/^(\d*\.)(.*)\.(.*)$/, '$1$2$3')
                                  .replace(/\.(\d{2})\d+/, '.$1')
                                  .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 
-                    $('#total').text("₱ " + total_amt);
+                                $('#total').text("₱ " + total_amt);
+
+                            }else{
+                                $(".promoCodeError").text("The promo code you have entered is deactivated.");
+                                $('#promo_code').val('');
+                                $(".promoCodeError").css({"color": "red"})
+                            } 
+                        }else{
+                            $(".promoCodeError").text("The promo code you have entered is not applicable at this branch.");
+                            $('#promo_code').val('');
+                            $(".promoCodeError").css({"color": "red"})
+                        }
+                        
+                    }else{
+                        // invalid promo code
+
+                        $(".promoCodeError").text("The promo code you have entered is expired.");
+                        $('#promo_code').val('');
+                        $(".promoCodeError").css({"color": "red"})
+                    }
 
 
                 }else{

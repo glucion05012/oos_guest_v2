@@ -89,6 +89,7 @@ class Post_model extends CI_Model{
         food_menu_tb.name as itemName,
         ordered_items_tb.quantity,
         orders_tb.promo_code,
+        orders_tb.promo_percent,
         orders_tb.promo_amt,
         orders_tb.reference_number,
         orders_tb.total_amount,
@@ -168,7 +169,7 @@ class Post_model extends CI_Model{
 
             if ($promoPerCent == 1){
                 $undiscounted = $this->input->post('subtotal');
-                $promocodeVal = $undiscounted * ($promocodeVal * 0.01);
+                // $promocodeVal = $undiscounted * ($promocodeVal * 0.01);
             }
         }else{
             $promocodeVal = '';
