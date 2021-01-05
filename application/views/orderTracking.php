@@ -42,6 +42,7 @@
                 $orderedFrom = $oD['branchName'];
                 $deliverTo = $oD['room_no'];
                 $dateDelivered = $oD['datetime_delivered'];
+                $dateDelivered = date("M j, Y g:i a"); 
                 $promoCode = $oD['promo_code'];
                 $menuAmt = number_format($oD['menu_amt'],2);
                 $discountVal = $oD['promo_amt']; // Order Discount
