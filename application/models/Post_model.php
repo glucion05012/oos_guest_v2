@@ -251,5 +251,10 @@ class Post_model extends CI_Model{
         WHERE token = '$currentToken' AND menu_id = '$currentMenuId'");
         return true;
     }
+    public function getBranchName(){
+        $currentBranch = $_SESSION['selectedBranch'];
+        $query = $this->db->query("select name from hotel_branch_tb where branch_id = '$currentBranch'");
+        return $query->row_array();
+    }
 }
 ?>

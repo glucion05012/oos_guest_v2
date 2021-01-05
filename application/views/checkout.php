@@ -3,7 +3,7 @@
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb mb-0">
                 <li class="breadcrumb-item">
-                    <a href="#"><a class="card-link" href="<?php echo base_url(); ?>">Branch Selection</a></a>
+                <a class="card-link" href="<?php echo base_url(); ?>"><?php echo $getBranch['name']; ?></a>
                 </li>
                 <li class="breadcrumb-item"><a href="#">
                     <a class="card-link"  href="<?php echo base_url('category'); ?>">Categories</a>
