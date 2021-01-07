@@ -67,13 +67,13 @@ $(document).ready(function(){
                         }
                     }
 
-                    alert("validFrom: " + validFrom);
-                    alert("today: " + today);
-                    alert("validTo: " + validTo);
+                    // alert("validFrom: " + validFrom);
+                    // alert("today: " + today);
+                    // alert("validTo: " + validTo);
                     
-                    alert("validFroms: " + validFroms);
-                    alert("todays: " + todays);
-                    alert("validTos: " + validTos);
+                    // alert("validFroms: " + validFroms);
+                    // alert("todays: " + todays);
+                    // alert("validTos: " + validTos);
                     
 
                     if (validFrom <= today && validTo >= today || validFroms == todays && validTos == todays){
