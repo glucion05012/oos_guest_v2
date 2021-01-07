@@ -46,9 +46,9 @@ $(document).ready(function(){
                 if(len > 0){
 
                     //check validity
-                    var validFrom = new Date(msg[0].valid_from);
-                    var validTo = new Date(msg[0].valid_to);
-                    var today = new Date();
+                    var validFrom = new Date(msg[0].valid_from).toDateString();
+                    var validTo = new Date(msg[0].valid_to).toDateString();
+                    var today = new Date().toDateString();
 
                     var validFroms = new Date(msg[0].valid_from).toDateString();
                     var validTos = new Date(msg[0].valid_to).toDateString();
@@ -66,6 +66,15 @@ $(document).ready(function(){
                             branchValid = true;
                         }
                     }
+
+                    alert("validFrom: " + validFrom);
+                    alert("today: " + today);
+                    alert("validTo: " + validTo);
+                    
+                    alert("validFroms: " + validFroms);
+                    alert("todays: " + todays);
+                    alert("validTos: " + validTos);
+                    
 
                     if (validFrom <= today && validTo >= today || validFroms == todays && validTos == todays){
                         if(branchValid == true){
