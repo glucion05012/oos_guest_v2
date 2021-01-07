@@ -46,9 +46,19 @@ $(document).ready(function(){
                 if(len > 0){
 
                     //check validity
-                    var validFrom = new Date(msg[0].valid_from).toDateString();
-                    var validTo = new Date(msg[0].valid_to).toDateString();
-                    var today = new Date().toDateString();
+                    //var validFrom = new Date(msg[0].valid_from);
+                    // var validTo = new Date(msg[0].valid_to);
+                    var f = new Date(msg[0].valid_from);
+                    f.setHours(0,0,0);
+                    var validFrom = f;
+
+                    var e = new Date(msg[0].valid_to);
+                    e.setHours(11,59,0);
+                    var validTo = e;
+
+                    var d = new Date();
+                    d.setHours(8,0,0);
+                    var today = d;
 
                     var validFroms = new Date(msg[0].valid_from).toDateString();
                     var validTos = new Date(msg[0].valid_to).toDateString();
@@ -66,17 +76,12 @@ $(document).ready(function(){
                             branchValid = true;
                         }
                     }
-
-                    // alert("validFrom: " + validFrom);
-                    // alert("today: " + today);
-                    // alert("validTo: " + validTo);
                     
-                    // alert("validFroms: " + validFroms);
-                    // alert("todays: " + todays);
-                    // alert("validTos: " + validTos);
-                    
-
-                    if (validFrom <= today && validTo >= today || validFroms == todays && validTos == todays){
+                        // alert("validFrom: " + validFrom);
+                        // alert("today: " + today);
+                        // alert("validTo: " + validTo);
+                    if (today >= validFrom && today <= validTo){
+                        
                         if(branchValid == true){
                            
                             if(msg[0].status == 1){
@@ -122,7 +127,6 @@ $(document).ready(function(){
                             $('#promo_code').val('');
                             $(".promoCodeError").css({"color": "red"})
                         }
-                        
                     }else{
                         // invalid promo code
 
