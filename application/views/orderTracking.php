@@ -38,11 +38,11 @@
                 $oStat = $oD['order_status'];
                 $orderedBy = $oD['customerName'];
                 $dateOrdered = $oD['datetime_ordered'];
-                $dateOrdered = date("M j, Y g:i a");  
+                $dateOrdered = date("M j, Y g:i a",strtotime($dateOrdered));  
                 $orderedFrom = $oD['branchName'];
                 $deliverTo = $oD['room_no'];
                 $dateDelivered = $oD['datetime_delivered'];
-                $dateDelivered = date("M j, Y g:i a"); 
+                $dateDelivered = date("M j, Y g:i a", strtotime($dateDelivered)); 
                 $promoCode = $oD['promo_code'];
                 $menuAmt = number_format($oD['menu_amt'],2);
                 $discountVal = $oD['promo_amt']; // Order Discount
@@ -100,7 +100,7 @@
                                 <li class="list-group-item">Room No.: <?php echo $deliverTo; ?></li>
                                 <?php endif  ?>
 
-                                <?php if (isset($dateDelivered)&&(strlen($dateDelivered)>0)) : ?>
+                                <?php if ($oStat == "COMPLETED") : ?>
                                 <li class="list-group-item">Delivered at: <?php echo $dateDelivered; ?></li>
                                 <?php endif  ?>
 
@@ -139,7 +139,7 @@
                     <div class="col-11 col-lg-7 p-0 mx-auto mx-2">
                     <h5>Purchased Items</h5>
                         <?php foreach ($getOrderDetails as $oD) : ?>
-                            <div class="row my-4">
+                            <div class="row my-0">
                                 <div class="col-12 mx-auto col-sm-4 checkoutImgCol">
                                     <img class="img-thumbnail checkout-item-img my-4" src="<?php echo base_url().'assets/food_menu_images/'.$oD['image']; ?>" alt="">
                                 </div>

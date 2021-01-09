@@ -68,7 +68,23 @@ class Post_model extends CI_Model{
          return true;
     }
     public function getCart(){
-        $query = $this->db->get('cart_list_tb');
+
+        $currentToken = $_SESSION['token'];
+		$currentBranch = $_SESSION['selectedBranch'];
+        //$query = $this->db->get('cart_list_tb');
+        $query = $this->db->query("SELECT cart_list_tb.qty as orderedQty,
+        cart_list_tb.cart_id,
+        food_menu_tb.menu_id,
+        food_menu_tb.category,
+        food_menu_tb.name,
+        food_menu_tb.quantity as availableQty,
+        food_menu_tb.image,
+        food_menu_tb.amount
+        from cart_list_tb
+        left join food_menu_tb
+        on cart_list_tb.menu_id = food_menu_tb.menu_id 
+        WHERE food_menu_tb.branch_id = '$currentBranch' AND cart_list_tb.token = '$currentToken'");
+
         return $query->result_array();
     }
 
@@ -149,7 +165,7 @@ class Post_model extends CI_Model{
         $date_log = date("Y-m-d H:i:s");
 
         // sets value to checkbox. 0 if checked, 1 if unchecked
-        $checkinVal;
+        $checkinVal=0;
         if (null !== $this->input->post('checkedIn') && $this->input->post('checkedIn') == "0"){
             $checkinVal = 0;
         }else{

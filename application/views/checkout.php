@@ -9,16 +9,10 @@
                     <a class="card-link"  href="<?php echo base_url('category'); ?>">Categories</a>
                 </li>
 
-                <?php foreach ($getCart as $gct){
-                    $category = "sandwiches";
-                    if($_SESSION['token'] == $gct['token']){
-                        foreach ($food_uncatmenu_tb as $fmt){
-                            if($gct['menu_id'] == $fmt['menu_id']){
-                                $category = $fmt['category'];
-
-                            };
-                        };
-                    };
+                <?php 
+                $category = "sandwiches";
+                foreach ($getCart as $gct){
+                    $category = $gct['category'];
                 };
                 ?>
 
@@ -76,74 +70,70 @@
                             <!-- ks row container for items -->
                             <?php 
                             
+                            $total_amt = 0;
+                            
                             foreach ($getCart as $gct){
-                                if($_SESSION['token'] == $gct['token']){
-                                    foreach ($food_uncatmenu_tb as $fmt){
-                                        
-                                        if($_SESSION['selectedBranch'] == $fmt['branch_id']){
-                                            if($gct['menu_id'] == $fmt['menu_id']){
-                                                $image = base_url().'assets/food_menu_images/'. $fmt['image'];
-                                                $name = $fmt['name'];
-                                                $qty = $gct['qty'];
-                                                $menuID = $fmt['menu_id'];
-                                                $amt = number_format($fmt['amount'],2);
-                                                $getCartID = $gct['cart_id'];
-                                                $availableQty = $fmt['quantity'];
-                                                echo "
+                                $image = base_url().'assets/food_menu_images/'. $gct['image'];
+                                $name = $gct['name'];
+                                $qty = $gct['orderedQty'];//cartQty
+                                $menuID = $gct['menu_id'];
+                                $amt = number_format($gct['amount'],2);//food_menu_tb
+                                $getCartID = $gct['cart_id'];
+                                $availableQty = $gct['availableQty'];
+                                $removeUrl = base_url()."items/remove/".$getCartID;
+                                // computation
+                                $rowPrice = $qty * $amt;
+                                $total_amt = $total_amt + $rowPrice;
+                                
+                                echo "
+                                <div class='row'>
+                                    <div class='col-12'>
+                                        <div class='row itemRow'>
+                                            <div class='col-12 col-sm-3 checkoutImgCol mx-auto'>
+                                                <img class='img-thumbnail checkout-item-img my-2' src='$image' alt=''>
+                                            </div>
+                                            <div class='col-12 col-sm-9'>
                                                 <div class='row'>
-                                                    <div class='col-12'>
-                                                        <div class='row itemRow'>
-                                                            <div class='col-12 col-sm-3 checkoutImgCol mx-auto'>
-                                                                <img class='img-thumbnail checkout-item-img my-2' src='$image' alt=''>
-                                                            </div>
-                                                            <div class='col-12 col-sm-9'>
-                                                                <div class='row'>
-                                                                    <div class='d-flex bd-highlight col-12 col-md-3'>
-                                                                        <div class='p-2 bd-highlight tableColumnHeader checkoutFlexItem'>
-                                                                            <h6>Menu Item</h6>
-                                                                        </div>
-                                                                        <div class='p-2 bd-highlight mx-auto checkoutFlexItem itemTableInfo'>
-                                                                            $name
-                                                                        </div>
-                                                                        <input type='hidden' name='menu_id' id ='menu_id-$menuID' value='$menuID'>
-                                                                    </div>
-                                                                    <div class='d-flex bd-highlight col-12 col-md-3'>
-                                                                        <div class='p-2 bd-highlight checkoutFlexItem tableColumnHeader'>
-                                                                            <h6>Quantity</h6>
-                                                                        </div>
-                                                                        <div class='p-2 bd-highlight mx-auto checkoutFlexItem itemTableInfo' data-toggle='tooltip' data-placement='top' title='Quantity (Ordered / Available)'>
-                                                                            <input id='inputQty-$menuID' class='inputQty' type='number' name = 'quantity' value = '$qty'  min='1' max='$availableQty' style='width:40px;'> / $availableQty pc(s)
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class='d-flex bd-highlight col-12 col-md-3'>
-                                                                        <div class='p-2 bd-highlight checkoutFlexItem tableColumnHeader'>
-                                                                            <h6>Price</h6>
-                                                                        </div>
-                                                                        <div class='p-2 bd-highlight mx-auto checkoutFlexItem itemTableInfo'>
-                                                                            ₱ $amt
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class='d-flex bd-highlight col-12 col-md-3'>
-                                                                        <div class='p-2 bd-highlight checkoutFlexItem tableColumnHeader'>
-                                                                            <h6>Action</h6>
-                                                                        </div>
-                                                                        <a class='aremovefrombag mx-auto pt-2' href='remove/$getCartID' data-toggle='tooltip' data-placement='top' title='Remove from tray'><i class='fa fa-trash fa-lg'></i></a>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
+                                                    <div class='d-flex bd-highlight col-12 col-md-3'>
+                                                        <div class='p-2 bd-highlight tableColumnHeader checkoutFlexItem'>
+                                                            <h6>Menu Item</h6>
+                                                        </div>
+                                                        <div class='p-2 bd-highlight mx-auto checkoutFlexItem itemTableInfo'>
+                                                            $name
+                                                        </div>
+                                                        <input type='hidden' name='menu_id' id ='menu_id-$menuID' value='$menuID'>
+                                                    </div>
+                                                    <div class='d-flex bd-highlight col-12 col-md-3'>
+                                                        <div class='p-2 bd-highlight checkoutFlexItem tableColumnHeader'>
+                                                            <h6>Quantity</h6>
+                                                        </div>
+                                                        <div class='p-2 bd-highlight mx-auto checkoutFlexItem itemTableInfo' data-toggle='tooltip' data-placement='top' title='Quantity (Ordered / Available)'>
+                                                            <input id='inputQty-$menuID' class='inputQty' type='number' name = 'quantity' value = '$qty'  min='1' max='$availableQty' style='width:40px;'> / $availableQty pc(s)
                                                         </div>
                                                     </div>
-    
+                                                    <div class='d-flex bd-highlight col-12 col-md-3'>
+                                                        <div class='p-2 bd-highlight checkoutFlexItem tableColumnHeader'>
+                                                            <h6>Price</h6>
+                                                        </div>
+                                                        <div class='p-2 bd-highlight mx-auto checkoutFlexItem itemTableInfo'>
+                                                            ₱ $amt
+                                                        </div>
+                                                    </div>
+                                                    <div class='d-flex bd-highlight col-12 col-md-3'>
+                                                        <div class='p-2 bd-highlight checkoutFlexItem tableColumnHeader'>
+                                                            <h6>Action</h6>
+                                                        </div>
+                                                        <a class='aremovefrombag mx-auto pt-2' href='$removeUrl' data-toggle='tooltip' data-placement='top' title='Remove from tray'><i class='fa fa-trash fa-lg'></i></a>
+                                                    </div>
                                                 </div>
-    
-                                                <hr class='col-12 mx-auto;'>
-                                                ";
-                                            };
-                                        }
-                                        
-                                        
-                                    };
-                                };
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <hr class='col-12 mx-auto;'>
+                                ";
 
                             }; ?>
 
@@ -164,25 +154,25 @@
                                 <div class="row">
                                     <div class="col">
                                     <?php
-                                    $total_amt = 0;
-                                    foreach ($getCart as $gct){
-                                        if($_SESSION['token'] == $gct['token']){
-                                            foreach ($food_uncatmenu_tb as $fmt){
-                                                if($gct['menu_id'] == $fmt['menu_id']){
+                                    // $total_amt = 0;
+                                    // foreach ($getCart as $gct){
+                                    //     if($_SESSION['token'] == $gct['token']){
+                                    //         foreach ($food_uncatmenu_tb as $fmt){
+                                    //             if($gct['menu_id'] == $fmt['menu_id']){
 
-                                                    $qty = $gct['qty'];
-                                                    $amt = $fmt['amount'];
+                                    //                 $qty = $gct['qty'];
+                                    //                 $amt = $fmt['amount'];
 
-                                                    $total_amt += floatval($amt) * intval($qty);
-                                                };
-                                            };
-                                        };
-                                    };
+                                    //                 $total_amt += floatval($amt) * intval($qty);
+                                    //             };
+                                    //         };
+                                    //     };
+                                    // };
                                     ?>
                                         <h6>Subtotal:</h6>
                                     </div>
                                     <div class="col" style="text-align:right;">
-                                    <input type="hidden" id="subtotal" value="<?php echo $total_amt; ?>" name="subtotal"></input>
+                                    <input type="hidden" id="subtotal" value="<?php echo $total_amt; ?>" name="subtotal">
                                         <h6>₱ <?php echo number_format($total_amt,2); ?></h6>
                                     </div>
                                 </div>

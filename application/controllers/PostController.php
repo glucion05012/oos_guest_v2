@@ -15,41 +15,37 @@ class PostController extends CI_Controller {
 	}
 	public function index(){
 		$data['getBranches'] =  $this->post_model->getBranches();// for branch selection
-		$data['getPromoCode'] =  $this->post_model->checkPromoCode();// do not remove
 		$this->load->view('templates/header');
 		$this->load->view('BranchSelection',$data);
-		$this->load->view('templates/footer', $data);
+		$this->load->view('templates/footer');
 	}
 	public function category()
 	{
-		$data['getBranch'] = $this->post_model->getBranchName(); //for branch name on breadcrumb
-		$data['getPromoCode'] =  $this->post_model->checkPromoCode();// do not remove
-		//$data['getBranches'] =  $this->post_model->getBranches();// for branch selection
+		$data['getBranch'] = $this->post_model->getBranchName(); //for getting selected branch's name
 		$data['food_uncatmenu_tb'] =  $this->post_model->getMenuItems();
-		$this->load->view('templates/header', $data);
+		$data['getCart'] =  $this->post_model->getCart();//for sidebar
+		$this->load->view('templates/header');
 		$this->load->view('home',$data);
+		$this->load->view('templates/sidebar', $data);
 		$this->load->view('templates/footer');
 	}
 	public function items($category)
 	{
-		$data['getBranch'] = $this->post_model->getBranchName(); //for branch name on breadcrumb
-		//$data['getBranches'] =  $this->post_model->getBranches();// for branch selection
-		$data['getPromoCode'] =  $this->post_model->checkPromoCode();// do not remove
+		$data['getBranch'] = $this->post_model->getBranchName(); //for getting selected branch's name
 		$data['food_menu_tb'] =  $this->post_model->getCategoryItems($category);
-		$data['countBagItems'] = $this->post_model->countBagItems();
-		$data['getCart'] =  $this->post_model->getCart();
-		$this->load->view('templates/header', $data);
+		//$data['countBagItems'] = $this->post_model->countBagItems();
+		$data['getCart'] =  $this->post_model->getCart();//for sidebar
+		$this->load->view('templates/header');
 		$this->load->view('items', $data);
+		$this->load->view('templates/sidebar', $data);
 		$this->load->view('js/alerts');
 		$this->load->view('templates/footer');
 	}
 	public function checkout()
 	{
-		$data['getBranch'] = $this->post_model->getBranchName(); //for branch name on breadcrumb
-		//$data['getBranches'] =  $this->post_model->getBranches();// for branch selection
+		$data['getBranch'] = $this->post_model->getBranchName(); //for getting selected branch's name
 		$this->form_validation->set_rules("subtotal","subtotal","required");
 		if($this->form_validation->run() === FALSE){
-			$data['getPromoCode'] =  $this->post_model->checkPromoCode();// do not remove
 			$data['food_uncatmenu_tb'] =  $this->post_model->getMenuItems();
 			$data['getCart'] =  $this->post_model->getCart();
 
@@ -76,13 +72,10 @@ class PostController extends CI_Controller {
 	}
 	public function postOrderPage(){
 		
-		$data['getPromoCode'] =  $this->post_model->checkPromoCode();// do not remove
-
-		// echo json_encode($data['newOrder']);
-		
 		$this->load->view('templates/header');
-		$this->load->view('postOrder', $data);
-		$this->load->view('templates/footer',$data);
+		$this->load->view('postOrder');
+		$this->load->view('templates/footer');
+
 	}
 	public function createSession(){
 		
@@ -92,6 +85,10 @@ class PostController extends CI_Controller {
 		$_SESSION['token'] = substr(str_shuffle($str_result), 0, 20); 
 		$_SESSION['selectedBranch'] = $this->input->post('selectedBranch');
 		
+		//array for sidebar items (tray)
+		$_SESSION['tray_menu_id'] = null;
+		$_SESSION['tray_ordered_qty'] = null;
+
 		redirect('category');
 	}
 
@@ -117,27 +114,21 @@ class PostController extends CI_Controller {
 	}
 
 	public function updateBagItemQty(){
+
 		$this->post_model->updateBagItemQty();
 
-
-		// echo $_POST['menuid'];
-		// echo $_POST['inputQty'];
-		// echo $_SESSION['token'];
 	}
 
 	public function trackOrder(){
-		$data['getPromoCode'] =  $this->post_model->checkPromoCode();// do not remove
+
 		$data['getOrderDetails'] = $this->post_model->getOrderDetails();
-		//echo $_POST['orderRefNo'];
-		//echo json_encode($data['getOrderDetails']);
 
 		// proceed to load the next page if data is returned
 
-		
 		if($this->post_model->getOrderDetails()){
 			$this->load->view('templates/header');
 			$this->load->view('orderTracking', $data);
-			$this->load->view('templates/footer',$data);
+			$this->load->view('templates/footer');
 		}else{
 			$data['getBranches'] =  $this->post_model->getBranches();// for branch selection
 			$this->session->set_flashdata('successmsg', 'Order reference number not found!');
@@ -145,7 +136,7 @@ class PostController extends CI_Controller {
 			$this->load->view('templates/header');
 			$this->load->view('BranchSelection',$data);
 			$this->load->view('js/alerts');
-			$this->load->view('templates/footer',$data);
+			$this->load->view('templates/footer');
 		}
 	}
 }

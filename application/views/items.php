@@ -16,107 +16,8 @@
         </nav>
         <!-- breadcrumb end -->
 
-        <div id="mySidebar" class="d-flex flex-column sidebar">
-            <!-- sidebar header -->
-            <div class="p-2 col-sm sidebarheader">
-                <h2 style="padding-top:40px;">Your bag</h2>
-                <hr>
-                <div class="row">
-                    <div class="col-12">
-                        <?php foreach ($getBranches as $brnch) {
-                            if($brnch['branch_id'] == $_SESSION['selectedBranch']){
-                                $brnch = $brnch['name'];
-                                echo "<h6 id='branchIndicator'>Branch: $brnch</h6>";
-                            }
-                        }
-                        ?>
-                    </div>
-                </div>
-            </div>
-
-            <!-- sidebar item list -->
-            <div class="p-2 sidebarContainer overflow-auto">
-                <ul class="list-group list-group-flush bag-items-list">
-                    <?php foreach ($getCart as $gct){
-                        if($_SESSION['token'] == $gct['token']){
-                            foreach ($food_menu_tb as $fmt){
-                                if($gct['menu_id'] == $fmt['menu_id']){
-                                    $image = base_url().'assets/food_menu_images/'. $fmt['image'];
-                                    $name = $fmt['name'];
-                                    $qty = $gct['qty'];
-                                    $menuID = $fmt['menu_id'];
-                                    $amt = $fmt['amount'];
-
-                                    echo"
-
-                                    <li class='list-group-item bg-transparent'>
-                                        <a href='#' style='position:absolute;top:2px;right:5px;' data-toggle='tooltip' data-placement='top' title='remove'>
-                                            <svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' class='bi bi-x text-muted' viewBox='0 0 16 16'>
-                                            <path fill-rule='evenodd' d='M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z'/>
-                                            </svg>
-                                        </a>
-                                        <table class='table-borderless' style='width:100%;padding:0;'>
-                                            <tr>
-                                                <td scope='col' rowspan='2' style='width:90px;'>
-                                                    <img src='$image' class='img-fluid' alt='...'>
-                                                </td>
-                                                <td colspan='2'><h6 class='mt-0'>$name</h6></td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <input type='number' value='$qty' name='quantity' class='form-control quantity' id='$menuID' aria-label='Example text with button addon' aria-describedby='button-addon1'>
-                                                    </input>
-                                                </td>
-                                                <td>
-                                                    <h6 style='padding-top:6px;text-align:right;'>₱ $amt</h6>
-                                                </td>
-                                            </tr>
-                                        </table>
-                                    </li>
-
-                                    ";
-                                };
-                            };
-                        };
-
-                    }; ?>
-                </ul>
-            </div>
-            <!-- sidebar footer -->
-            <div class="p-2 bagfooter align-items-center">
-            <hr>
-                <div class="row" style="padding-top:20px;padding-bottom:40px;" >
-                    <div class="col-3"><h6>Total:</h6></div>
-                    <?php
-                    $total_amt = 0;
-                    foreach ($getCart as $gct){
-                        if($_SESSION['token'] == $gct['token']){
-                            foreach ($food_menu_tb as $fmt){
-                                if($gct['menu_id'] == $fmt['menu_id']){
-
-                                    $qty = $gct['qty'];
-                                    $amt = $fmt['amount'];
-
-                                    $total_amt += floatval($amt) * intval($qty);
-                                };
-                            };
-                        };
-                    };
-                    ?>
-                    <div class="col-9"><h3 style="text-align:right;">₱<?php echo $total_amt; ?></h3></div>
-                    <!-- <form class="col-12" action="<?= base_url('checkout'); ?>" method="post" accept-charset="utf-8"> -->
-                    <form class="col-12" action="<?php echo "checkout/"; ?>" method="post">
-                        <button class="btn btn-lg s-primary-btn btn-sidebar-checkout" type="submit" name="button" style="margin-top:8px">Checkout</button>
-                    </form>
-                </div>
-            </div>
-            <a href="javascript:void(0)" class="s-tertiary-btn closebtn float-right" onclick="closeNav()" style="margin-right:8px;">
-                <i class="fas fa-times fa-xs"></i>
-            </a>
-        </div>
-
         <!-- checkout button begin -->
-        <form action='<?php echo base_url('items/checkout'); ?>' method='post' accept-charset='utf-8'>
+        <!-- <form action='<?php //echo base_url('items/checkout'); ?>' method='post' accept-charset='utf-8'>
             <button type='submit' class='btn s-primary-btn btn-lg checkoutbtn'>
                 Checkout
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-bag-check-fill" viewBox="0 0 16 20">
@@ -124,9 +25,9 @@
                     </svg>
             </button>
         </form>
-        <?php if($countBagItems > 0): ?>
-            <span class="badge badge-pill badge-primary itemCount"><?php echo $countBagItems; ?></span>              
-        <?php endif; ?>
+        <?php //if($countBagItems > 0): ?>
+            <span class="badge badge-pill badge-primary itemCount"><?php //echo $countBagItems; ?></span>              
+        <?php //endif; ?> -->
         <!-- checkout button end -->
 
         <!-- ks header begin -->
@@ -185,7 +86,7 @@
                                                         </div>
                                                     </div>
                                                     <div class='p-2 bd-highlight addtocartcardcolumn'>
-                                                        <button type='submit' class='btn btn-sm btn-addtocart'data-toggle='tooltip' data-placement='top' title='Add to tray' id='addtocart'>
+                                                        <button type='submit' class='btn btn-sm btn-addtocart' data-toggle='tooltip' data-placement='top' title='Add to tray' id='addtocart'>
                                                             <i class='fas fa-shopping-bag btn-fa-shopping-bag fa-sm'></i>
                                                         </button>
                                                     </div>
@@ -196,12 +97,6 @@
                                     
                                 ";
                             } //end if
-
-                        // $pageWasRefreshed = isset($_SERVER['HTTP_CACHE_CONTROL']) && $_SERVER['HTTP_CACHE_CONTROL'] === 'max-age=0';
-
-                        // if($pageWasRefreshed ) {
-                        //     redirect(base_url());
-                        // }
 
                     }
                 ?>
