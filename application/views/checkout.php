@@ -149,6 +149,14 @@
                                 <div class="row">
                                     <div class="col">
                                     <?php
+                                        $total_amt = 0;
+                                        foreach($_SESSION['trayItems'] as $row){
+                                            if (isset($row[0]['menu_id'])){
+                                                $qty = $row[0]['qty'];
+                                                $amt = $row[0]['price'];
+                                                $total_amt += floatval($amt) * intval($qty);
+                                            }
+                                        }
                                     // $total_amt = 0;
                                     // foreach ($getCart as $gct){
                                     //     if($_SESSION['token'] == $gct['token']){

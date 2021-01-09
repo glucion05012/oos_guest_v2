@@ -1,30 +1,5 @@
 <script>
 $(document).ready(function(){
-
-    <?php foreach ($getCart as $gct): ?>
-        var menuInput = document.getElementById("inputQty-" + "<?php echo $gct['menu_id'];?>");
-        var menuIdInput = document.getElementById("menu_id-" + "<?php echo $gct['menu_id'];?>");
-        <?php if($_SESSION['token'] == $gct['token']): ?>
-            
-            if(typeof(menuInput) != "undefined" && menuInput !== null) {
-                $(menuInput).focusout(function(){
-                    
-                    var qty = $("#inputQty-" + "<?php echo $gct['menu_id'];?>").val();
-                    var menu_id = $("#menu_id-" + "<?php echo $gct['menu_id'];?>").val();
-                    
-                    $.ajax({
-                        url:"<?php echo base_url(); ?>update_Bag_Item",
-                        method:"POST",
-                        dataType:'JSON',
-                        data:{inputQty:qty,
-                        menuid:menu_id}
-                    });
-                    location.reload();
-                    return false;
-                });
-            }
-        <?php endif; ?>
-    <?php endforeach; ?>  
     
     $('#promo_code').focusout(function(){
 
@@ -44,7 +19,6 @@ $(document).ready(function(){
                 var len = msg.length;
                 $('#discount').text('');
                 if(len > 0){
-
                     //check validity
                     //var validFrom = new Date(msg[0].valid_from);
                     // var validTo = new Date(msg[0].valid_to);
