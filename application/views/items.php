@@ -58,6 +58,7 @@
                                 $image = base_url().'assets/food_menu_images/'. $fmt['image'];
                                 $menuID = $fmt['menu_id'];
                                 $name = $fmt['name'];
+                                $category = $fmt['category'];
                                 $desc = $fmt['description'];
                                 $amt = number_format($fmt['amount'],2);
                                 $token = $_SESSION['token'];
@@ -71,6 +72,10 @@
                                                 <input type='hidden' name='token' value='$token'>
                                                 <input type='hidden' name='branchid' value='$selectedBranch'>
                                                 <input type='hidden' name='menuid' value='$menuID'>
+                                                <input type='hidden' name='menuitem' value='$name'>
+                                                <input type='hidden' name='price' value='$amt'>
+                                                <input type='hidden' name='img' value='$image'>
+                                                <input type='hidden' name='category' value='$category'>
                                                 <img src='$image' class='card-img-top' alt='image'>
                                                 <h4>
                                                     <span class='badge badge-pill badge-price'>₱ $amt</span>

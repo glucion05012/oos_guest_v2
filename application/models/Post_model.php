@@ -40,53 +40,53 @@ class Post_model extends CI_Model{
 
     //     return true;
     // }
-    public function addCart(){
+    // public function addCart(){
 
-        $currentToken = $_SESSION['token'];
-        $currentMenuId = $this->input->post('menuid');
-        $getBagItems = $this->db->query("SELECT * from cart_list_tb 
-        where menu_id = '$currentMenuId' AND token = '$currentToken'");
-        if ($getBagItems->num_rows() > 0){
-            $existingRow = $getBagItems->row_array();
-            $newQty = $existingRow['qty'] + $this->input->post('quantity');
-            $myQuery = $this->db->query("UPDATE cart_list_tb set qty = '$newQty' 
-            WHERE menu_id = '$currentMenuId' AND token = '$currentToken' ");
-        }else{
-            date_default_timezone_set('Asia/Manila');
-            $date_log = date('F j, Y g:i:a  ');
+    //     $currentToken = $_SESSION['token'];
+    //     $currentMenuId = $this->input->post('menuid');
+    //     $getBagItems = $this->db->query("SELECT * from cart_list_tb 
+    //     where menu_id = '$currentMenuId' AND token = '$currentToken'");
+    //     if ($getBagItems->num_rows() > 0){
+    //         $existingRow = $getBagItems->row_array();
+    //         $newQty = $existingRow['qty'] + $this->input->post('quantity');
+    //         $myQuery = $this->db->query("UPDATE cart_list_tb set qty = '$newQty' 
+    //         WHERE menu_id = '$currentMenuId' AND token = '$currentToken' ");
+    //     }else{
+    //         date_default_timezone_set('Asia/Manila');
+    //         $date_log = date('F j, Y g:i:a  ');
     
-            $dataBagItem = array(
-                'token' =>$this->input->post('token'),
-                'branch_id' => $this->input->post('branchid'),
-                'menu_id' => $this->input->post('menuid'),
-                'qty' => $this->input->post('quantity'),
-                'datetime' => $date_log,
-            );
-            $this->db->insert('cart_list_tb', $dataBagItem);
-        }
+    //         $dataBagItem = array(
+    //             'token' =>$this->input->post('token'),
+    //             'branch_id' => $this->input->post('branchid'),
+    //             'menu_id' => $this->input->post('menuid'),
+    //             'qty' => $this->input->post('quantity'),
+    //             'datetime' => $date_log,
+    //         );
+    //         $this->db->insert('cart_list_tb', $dataBagItem);
+    //     }
 
-         return true;
-    }
-    public function getCart(){
+    //      return true;
+    // }
+    // public function getCart(){
 
-        $currentToken = $_SESSION['token'];
-		$currentBranch = $_SESSION['selectedBranch'];
-        //$query = $this->db->get('cart_list_tb');
-        $query = $this->db->query("SELECT cart_list_tb.qty as orderedQty,
-        cart_list_tb.cart_id,
-        food_menu_tb.menu_id,
-        food_menu_tb.category,
-        food_menu_tb.name,
-        food_menu_tb.quantity as availableQty,
-        food_menu_tb.image,
-        food_menu_tb.amount
-        from cart_list_tb
-        left join food_menu_tb
-        on cart_list_tb.menu_id = food_menu_tb.menu_id 
-        WHERE food_menu_tb.branch_id = '$currentBranch' AND cart_list_tb.token = '$currentToken'");
+    //     $currentToken = $_SESSION['token'];
+	// 	$currentBranch = $_SESSION['selectedBranch'];
+    //     //$query = $this->db->get('cart_list_tb');
+    //     $query = $this->db->query("SELECT cart_list_tb.qty as orderedQty,
+    //     cart_list_tb.cart_id,
+    //     food_menu_tb.menu_id,
+    //     food_menu_tb.category,
+    //     food_menu_tb.name,
+    //     food_menu_tb.quantity as availableQty,
+    //     food_menu_tb.image,
+    //     food_menu_tb.amount
+    //     from cart_list_tb
+    //     left join food_menu_tb
+    //     on cart_list_tb.menu_id = food_menu_tb.menu_id 
+    //     WHERE food_menu_tb.branch_id = '$currentBranch' AND cart_list_tb.token = '$currentToken'");
 
-        return $query->result_array();
-    }
+    //     return $query->result_array();
+    // }
 
     public function check_promo(){
         $query = $this->db->get_where('promo_codes_tb', array('promo_code'=>$_POST["promoCode"]));
@@ -131,15 +131,15 @@ class Post_model extends CI_Model{
 
 
     }
-    public function item_remove($id){
-        $this->db->where('cart_id', $id);
-        $this->db->delete('cart_list_tb');
-        return true;
-    }
-    public function countBagItems(){
-        $query = $this->db->get_where('cart_list_tb', array('token'=>$_SESSION['token']));
-        return $query->num_rows();
-    }
+    // public function item_remove($id){
+    //     $this->db->where('cart_id', $id);
+    //     $this->db->delete('cart_list_tb');
+    //     return true;
+    // }
+    // public function countBagItems(){
+    //     $query = $this->db->get_where('cart_list_tb', array('token'=>$_SESSION['token']));
+    //     return $query->num_rows();
+    // }
     public function checkRefNoExist($rn){
         $query = $this->db->get_where('orders_tb', array('reference_number'=>$rn));
         $query->num_rows();
@@ -257,16 +257,16 @@ class Post_model extends CI_Model{
         return $getOrderQuery->result_array();
 
     }
-    public function updateBagItemQty(){
+    // public function updateBagItemQty(){
         
-        $qty = $this->input->post('inputQty');
-        $currentToken = $_SESSION['token'];
-        $currentMenuId = $this->input->post('menuid');
+    //     $qty = $this->input->post('inputQty');
+    //     $currentToken = $_SESSION['token'];
+    //     $currentMenuId = $this->input->post('menuid');
 
-        $query = $this->db->query("UPDATE cart_list_tb set qty = '$qty'
-        WHERE token = '$currentToken' AND menu_id = '$currentMenuId'");
-        return true;
-    }
+    //     $query = $this->db->query("UPDATE cart_list_tb set qty = '$qty'
+    //     WHERE token = '$currentToken' AND menu_id = '$currentMenuId'");
+    //     return true;
+    // }
     public function getBranchName(){
         $currentBranch = $_SESSION['selectedBranch'];
         $query = $this->db->query("select name from hotel_branch_tb where branch_id = '$currentBranch'");

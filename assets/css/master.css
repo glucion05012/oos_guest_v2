@@ -499,10 +499,9 @@ a.aremovefrombag .fa-trash:hover{
 td.sidebarQty{
     width:60px;
 }
-td.sidebarItemPrice h6{
-    padding-top:6px;
+/* td.sidebarItemPrice h6{
     padding-left:6px;
-}
+} */
 div.sidebarheader{
     height:auto;
 }

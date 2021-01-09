@@ -23,7 +23,6 @@ class PostController extends CI_Controller {
 	{
 		$data['getBranch'] = $this->post_model->getBranchName(); //for getting selected branch's name
 		$data['food_uncatmenu_tb'] =  $this->post_model->getMenuItems();
-		$data['getCart'] =  $this->post_model->getCart();//for sidebar
 		$this->load->view('templates/header');
 		$this->load->view('home',$data);
 		$this->load->view('templates/sidebar', $data);
@@ -33,8 +32,6 @@ class PostController extends CI_Controller {
 	{
 		$data['getBranch'] = $this->post_model->getBranchName(); //for getting selected branch's name
 		$data['food_menu_tb'] =  $this->post_model->getCategoryItems($category);
-		//$data['countBagItems'] = $this->post_model->countBagItems();
-		$data['getCart'] =  $this->post_model->getCart();//for sidebar
 		$this->load->view('templates/header');
 		$this->load->view('items', $data);
 		$this->load->view('templates/sidebar', $data);
@@ -47,9 +44,9 @@ class PostController extends CI_Controller {
 		$this->form_validation->set_rules("subtotal","subtotal","required");
 		if($this->form_validation->run() === FALSE){
 			$data['food_uncatmenu_tb'] =  $this->post_model->getMenuItems();
-			$data['getCart'] =  $this->post_model->getCart();
+			//$data['getCart'] =  $this->post_model->getCart();
 
-			$this->load->view('templates/header', $data);
+			$this->load->view('templates/header');
 			$this->load->view('checkout',$data);
 			$this->load->view('js/alerts');
 			$this->load->view('templates/footer');
@@ -86,17 +83,52 @@ class PostController extends CI_Controller {
 		$_SESSION['selectedBranch'] = $this->input->post('selectedBranch');
 		
 		//array for sidebar items (tray)
-		$_SESSION['tray_menu_id'] = null;
-		$_SESSION['tray_ordered_qty'] = null;
+		$_SESSION['trayItems'] = array();
 
 		redirect('category');
 	}
 
 	public function add_cart(){
 
-		$this->post_model->addCart();
+		$postedMenuId = $this->input->post('menuid');
+		$postedQty = $this->input->post('quantity');
+		$postedItem = $this->input->post('menuitem');
+		$postedPrice = $this->input->post('price');
+		$postedImg = $this->input->post('img');
+		$postedCategory = $this->input->post('category');
+
+		$menuExists = false;
+		//check if menu_id is already in the array
+		foreach($_SESSION['trayItems'] as &$row){
+			if (isset($row[0]['menu_id'])){
+				if ($row[0]['menu_id'] === $postedMenuId){ //if it exists in the row, update qty
+					$newQty = ($row[0]['qty'] + $postedQty);
+					$row[0]['qty'] = $newQty;
+					$menuExists = true;
+				}
+			}
+		}
+
+		if($menuExists == false){
+			//adds posted data as an array row to $_SESSION['trayItems']
+			$newRow = array(
+				array(
+					"menu_id"=>$postedMenuId,
+					"item"=>$postedItem,
+					"qty"=>$postedQty,
+					"price"=>$postedPrice,
+					"image"=>$postedImg,
+					"category"=>$postedCategory
+				)
+			);
+			array_push($_SESSION['trayItems'], $newRow);
+			//assigning posted values as an array
+		}
+
+		// $this->post_model->addCart();
 		$this->session->set_flashdata('successmsg', 'Item Added to tray');
 			
+		// refreshes the page
 		$url = $_SERVER['HTTP_REFERER'];
 		redirect($url);
 	}
@@ -106,11 +138,23 @@ class PostController extends CI_Controller {
 		echo json_encode($res);
 	}
 
+	//public function item_remove($id){
 	public function item_remove($id){
-		$this->post_model->item_remove($id);
+
+		foreach($_SESSION['trayItems'] as &$row){
+			if (isset($row[0]['menu_id'])){
+				if ($row[0]['menu_id'] === $id){ //if it exists in the row, update qty
+					unset($row[0]);
+					break;
+				}
+			}
+		}
 		
+		$this->session->set_flashdata('successmsg', 'Item removed from tray');
+		
+		// refreshes the page
 		$url = $_SERVER['HTTP_REFERER'];
-            redirect($url);
+		redirect($url);
 	}
 
 	public function updateBagItemQty(){
