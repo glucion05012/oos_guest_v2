@@ -21,6 +21,18 @@ class PostController extends CI_Controller {
 	}
 	public function category()
 	{
+		
+		//validate order qty vs available qty from db
+		foreach($_SESSION['trayItems'] as &$row){
+			if (isset($row[0]['menu_id'])){
+				$data['valid'] = $this->post_model->valid_tray_qty($row[0]['menu_id'], $row[0]['qty']);
+				if($data['valid'] == false){
+					$this->session->set_flashdata('errormsg', 'You can\'t order more than what is available');
+					unset($row[0]);
+				}
+			}
+		}
+		
 		$data['getBranch'] = $this->post_model->getBranchName(); //for getting selected branch's name
 		$data['food_uncatmenu_tb'] =  $this->post_model->getMenuItems();
 		$this->load->view('templates/header');
@@ -30,6 +42,18 @@ class PostController extends CI_Controller {
 	}
 	public function items($category)
 	{
+
+		//validate order qty vs available qty from db
+		foreach($_SESSION['trayItems'] as &$row){
+			if (isset($row[0]['menu_id'])){
+				$data['valid'] = $this->post_model->valid_tray_qty($row[0]['menu_id'], $row[0]['qty']);
+				if($data['valid'] == false){
+					$this->session->set_flashdata('errormsg', 'You can\'t order more than what is available');
+					unset($row[0]);
+				}
+			}
+		}
+
 		$data['getBranch'] = $this->post_model->getBranchName(); //for getting selected branch's name
 		$data['food_menu_tb'] =  $this->post_model->getCategoryItems($category);
 		$this->load->view('templates/header');
@@ -43,8 +67,7 @@ class PostController extends CI_Controller {
 		$data['getBranch'] = $this->post_model->getBranchName(); //for getting selected branch's name
 		$this->form_validation->set_rules("subtotal","subtotal","required");
 		if($this->form_validation->run() === FALSE){
-			$data['food_uncatmenu_tb'] =  $this->post_model->getMenuItems();
-			//$data['getCart'] =  $this->post_model->getCart();
+			$data['food_uncatmenu_tb'] =  $this->post_model->getMenuItems();//for items display on checkout
 
 			$this->load->view('templates/header');
 			$this->load->view('checkout',$data);
@@ -57,7 +80,7 @@ class PostController extends CI_Controller {
 			
 			$data['refNo'] = $this->post_model->newOrder();
 			if ($data['refNo'] == FALSE){
-				$this->session->set_flashdata('errormsg', 'Ordered quantity cannot be larger than the available quantity. Please check your items!');
+				$this->session->set_flashdata('errormsg', 'You can\'t order more than what is available');
 				$url = $_SERVER['HTTP_REFERER'];
                 redirect($url);
 			}else{
@@ -96,17 +119,26 @@ class PostController extends CI_Controller {
 		$postedPrice = $this->input->post('price');
 		$postedImg = $this->input->post('img');
 		$postedCategory = $this->input->post('category');
+		$postedAQty = $this->input->post('aQty');
 
 		$menuExists = false;
 		//check if menu_id is already in the array
 		foreach($_SESSION['trayItems'] as &$row){
 			if (isset($row[0]['menu_id'])){
-				if ($row[0]['menu_id'] === $postedMenuId){ //if it exists in the row, update qty
+				if ($row[0]['menu_id'] === $postedMenuId){ //if it exists, attempt to update qty
 					$newQty = ($row[0]['qty'] + $postedQty);
-					$row[0]['qty'] = $newQty;
+
+					// validate order qty vs available qty locally 
+					if($newQty<=$postedAQty){
+						$row[0]['qty'] = $newQty; //update ordered qty from the array
+						$this->session->set_flashdata('successmsg', 'Item Added to tray');
+					}else{
+						$this->session->set_flashdata('errormsg', 'You can\'t order more than what is available');
+					}
 					$menuExists = true;
 				}
 			}
+
 		}
 
 		if($menuExists == false){
@@ -123,10 +155,10 @@ class PostController extends CI_Controller {
 			);
 			array_push($_SESSION['trayItems'], $newRow);
 			//assigning posted values as an array
+			$this->session->set_flashdata('successmsg', 'Item Added to tray');
 		}
-
-		// $this->post_model->addCart();
-		$this->session->set_flashdata('successmsg', 'Item Added to tray');
+		
+		
 			
 		// refreshes the page
 		$url = $_SERVER['HTTP_REFERER'];

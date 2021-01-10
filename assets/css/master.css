@@ -252,19 +252,23 @@ button.btn-addtocart:hover {
     transition: .3s;
     cursor:pointer;
 }
-.btncardqty{
+.cardAQty{
+    padding-left:5px;
+    padding-top:3px;
+}
+/* .btncardqty{
     border-style: ridge;
     border-color: rgba(33, 37, 31, .6);
     background-color: #FFFFFF;
     color: rgba(33, 37, 31, .6);
-}
-.btncardqty:hover{
+} */
+/* .btncardqty:hover{
     border-style: ridge;
     border-color: rgba(33, 37, 31, .6);
     background-color: #FFFFFF;
     color: rgba(33, 37, 31, .6);
-}
-.input-group-itemcard{
+} */
+div.input-group.input-group-itemcard.px-0.input-group-sm.mb-3{
     padding:0px;
 }
 div.addtocartcardcontainer{

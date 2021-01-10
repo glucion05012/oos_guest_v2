@@ -54,57 +54,60 @@
                 <!-- ks single item card (with container) begin -->
                 <?php foreach ($food_menu_tb as $fmt){
 
-                            if($_SESSION['selectedBranch'] == $fmt['branch_id']){
-                                $image = base_url().'assets/food_menu_images/'. $fmt['image'];
-                                $menuID = $fmt['menu_id'];
-                                $name = $fmt['name'];
-                                $category = $fmt['category'];
-                                $desc = $fmt['description'];
-                                $amt = number_format($fmt['amount'],2);
-                                $token = $_SESSION['token'];
-                                $selectedBranch = $_SESSION['selectedBranch'];
-                                $url = base_url('add_cart');
+                    $image = base_url().'assets/food_menu_images/'. $fmt['image'];
+                    $menuID = $fmt['menu_id'];
+                    $name = $fmt['name'];
+                    $category = $fmt['category'];
+                    $desc = $fmt['description'];
+                    $amt = number_format($fmt['amount'],2);
+                    $token = $_SESSION['token'];
+                    $selectedBranch = $_SESSION['selectedBranch'];
+                    $aQty = $fmt['quantity'];
+                    $url = base_url('add_cart');
+                    
+                    echo"
+                        <div class='col-lg-4 col-md-6 col-sm-6 col-12 my-3'>
+                            <form action='$url' method='post' accept-charset='utf-8'>
+                                <div class='card item-card mx-auto'>
+                                    <input type='hidden' name='token' value='$token'>
+                                    <input type='hidden' name='branchid' value='$selectedBranch'>
+                                    <input type='hidden' name='menuid' value='$menuID'>
+                                    <input type='hidden' name='menuitem' value='$name'>
+                                    <input type='hidden' name='price' value='$amt'>
+                                    <input type='hidden' name='img' value='$image'>
+                                    <input type='hidden' name='category' value='$category'>
+                                    <input type='hidden' name='aQty' value='$aQty'>
 
-                                echo"
-                                    <div class='col-lg-4 col-md-6 col-sm-6 col-12 my-3'>
-                                        <form action='$url' method='post' accept-charset='utf-8'>
-                                            <div class='card item-card mx-auto'>
-                                                <input type='hidden' name='token' value='$token'>
-                                                <input type='hidden' name='branchid' value='$selectedBranch'>
-                                                <input type='hidden' name='menuid' value='$menuID'>
-                                                <input type='hidden' name='menuitem' value='$name'>
-                                                <input type='hidden' name='price' value='$amt'>
-                                                <input type='hidden' name='img' value='$image'>
-                                                <input type='hidden' name='category' value='$category'>
-                                                <img src='$image' class='card-img-top' alt='image'>
-                                                <h4>
-                                                    <span class='badge badge-pill badge-price'>₱ $amt</span>
-                                                </h4>
-                                                <div class='card-body'>
-                                                    <h5 class='card-title'>$name</h5>
-                                                    <p class='card-text'>$desc</p>
-                                                </div>
-                                                <div class='d-flex flex-row d-flex justify-content-end bd-highlight mb-3 addtocartcardcontainer'>
-                                                    <div class='p-2 bd-highlight addtocartcardcolumn'>
-                                                        <div class='input-group input-group-itemcard px-0 input-group-sm mb-3 col-6 float-right'>
-                                                            <input type='number' min='1' name='quantity' class='form-control quantity' value='1' aria-label='Example text with button addon' aria-describedby='button-addon1' data-toggle='tooltip' data-placement='top' title='Quantity to add' required>
-                                                        </div>
-                                                    </div>
-                                                    <div class='p-2 bd-highlight addtocartcardcolumn'>
-                                                        <button type='submit' class='btn btn-sm btn-addtocart' data-toggle='tooltip' data-placement='top' title='Add to tray' id='addtocart'>
-                                                            <i class='fas fa-shopping-bag btn-fa-shopping-bag fa-sm'></i>
-                                                        </button>
-                                                    </div>
+                                    <img src='$image' class='card-img-top' alt='image'>
+                                    <h4>
+                                        <span class='badge badge-pill badge-price'>₱ $amt</span>
+                                    </h4>
+                                    <div class='card-body'>
+                                        <h5 class='card-title'>$name</h5>
+                                        <p class='card-text'>$desc</p>
+                                    </div>
+                                    <div class='d-flex flex-row d-flex justify-content-end bd-highlight mb-3 addtocartcardcontainer'>
+                                        <div class='p-2 bd-highlight col-6 addtocartcardcolumn'>
+                                            <div class='input-group input-group-itemcard px-0 input-group-sm mb-3'>
+                                                <input type='number' min='1' max='$aQty' name='quantity' class='form-control quantity' value='1' aria-label='Example text with button addon' aria-describedby='button-addon1' data-toggle='tooltip' data-placement='top' title='Quantity to add' required>
+                                                <div class='input-group-append' data-toggle='tooltip' data-placement='top' title='Quantity available'>
+                                                    <span class='input-group-text' id='basic-addon2'>/$aQty pcs</span>
                                                 </div>
                                             </div>
-                                        </form>
+                                        </div>
+                                        <div class='p-2 bd-highlight addtocartcardcolumn'>
+                                            <button type='submit' class='btn btn-sm btn-addtocart' data-toggle='tooltip' data-placement='top' title='Add to tray' id='addtocart'>
+                                                <i class='fas fa-shopping-bag btn-fa-shopping-bag fa-sm'></i>
+                                            </button>
+                                        </div>
                                     </div>
-                                    
-                                ";
-                            } //end if
+                                </div>
+                            </form>
+                        </div>
+                        
+                    ";
 
-                    }
-                ?>
+                } ?>
                 <!-- single item card (with container) end -->
             </div>
         </main>
@@ -116,6 +119,12 @@
                 <div class="alert alert-success px-5 my-2 mx-auto" role="alert">
                     <!-- <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button> -->
                     <?php echo $this->session->flashdata('successmsg'); ?>
+                </div>
+            <?php endif; ?>
+            <?php if($this->session->flashdata('errormsg')): ?>
+                <div class="alert alert-danger px-5 my-2 mx-auto" role="alert">
+                    <!-- <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button> -->
+                    <?php echo $this->session->flashdata('errormsg'); ?>
                 </div>
             <?php endif; ?>
         </div>

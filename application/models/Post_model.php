@@ -13,7 +13,7 @@ class Post_model extends CI_Model{
     }
     public function getCategoryItems($category){
         $strTemp = str_replace("%20"," ", $category);
-        $query = $this->db->get_where('food_menu_tb', array('category'=>$strTemp));
+        $query = $this->db->get_where('food_menu_tb', array('category'=>$strTemp,'branch_id'=>$_SESSION['selectedBranch']));
         return $query->result_array();
     }
     public function getBranches(){
@@ -87,7 +87,15 @@ class Post_model extends CI_Model{
 
     //     return $query->result_array();
     // }
-
+    public function valid_tray_qty($menuId, $orderedQty){
+        $query = $this->db->get_where('food_menu_tb', array('menu_id'=>$menuId, 'branch_id'=>$_SESSION['selectedBranch']));
+        $itemRow = $query->row_array();
+        if ($orderedQty <= $itemRow['quantity']){
+            return true;
+        }else{
+            return false;
+        }
+    }
     public function check_promo(){
         $query = $this->db->get_where('promo_codes_tb', array('promo_code'=>$_POST["promoCode"]));
         return $query->result_array();
@@ -206,13 +214,6 @@ class Post_model extends CI_Model{
             left join food_menu_tb
             on cart_list_tb.menu_id = food_menu_tb.menu_id WHERE token = '$tempSession'");
 
-        //check qty 
-        foreach($selectBagItemsQuery->result_array() as $sbiq) {
-            if ($sbiq['qty'] > $sbiq['quantity']){
-                return FALSE;
-            }
-        }
-
         //insert order query
         $orderData = array(
             'datetime_ordered' =>$date_log,
@@ -233,40 +234,36 @@ class Post_model extends CI_Model{
         $this->db->insert('orders_tb', $orderData);
 
         
-        //insert each ordered items 
+
         // returns the latest row saved in orders_tb from above
         $insertedOrderId = $this->db->insert_id();
         $getOrderQuery = $this->db->get_where('orders_tb', array('order_id'=>$insertedOrderId));
-        foreach($selectBagItemsQuery->result_array() as $sbiq) 
-        {
-            // insert each items to ordered items table using the orderId
-            $dataBag = array(
-                'menu_amt' => $sbiq['amount'],
-                'menu_id' => $sbiq['menu_id'],
-                'order_id' => $insertedOrderId,
-                'quantity' => $sbiq['qty']
-            );
-            $this->db->insert('ordered_items_tb', $dataBag);
 
-            // updates branch stocks, subtracts ordered items qty
-            $newQty = $sbiq['quantity'] - $sbiq['qty'];
-            $currentMenuID = $sbiq['menu_id'];
-            $this->db->query("UPDATE food_menu_tb set quantity = '$newQty' WHERE menu_id = '$currentMenuID' ");
-        } 
+        //inserts each array of items from tray to ordered_items_tb
+        foreach($_SESSION['trayItems'] as $row){
+			if (isset($row[0]['menu_id'])){
+                $dataBag = array(
+                    'menu_amt' => $row[0]['price'],
+                    'menu_id' => $row[0]['menu_id'],
+                    'order_id' => $insertedOrderId,
+                    'quantity' => $row[0]['qty']
+                );
+                // executes insert query
+                $this->db->insert('ordered_items_tb', $dataBag);
+                
+                //update qty of food_menu_tb
+                $currentMenuID = $row[0]['menu_id'];
+                $orderedQty = $row[0]['qty'];
+                $this->db->query("UPDATE food_menu_tb set quantity = ((SELECT quantity from food_menu_tb WHERE menu_id = '$currentMenuID')-$orderedQty) WHERE menu_id = '$currentMenuID' ");
+        
+            }
+        }
+        //empty tray array
+        unset($_SESSION['trayItems']);
 
         return $getOrderQuery->result_array();
 
     }
-    // public function updateBagItemQty(){
-        
-    //     $qty = $this->input->post('inputQty');
-    //     $currentToken = $_SESSION['token'];
-    //     $currentMenuId = $this->input->post('menuid');
-
-    //     $query = $this->db->query("UPDATE cart_list_tb set qty = '$qty'
-    //     WHERE token = '$currentToken' AND menu_id = '$currentMenuId'");
-    //     return true;
-    // }
     public function getBranchName(){
         $currentBranch = $_SESSION['selectedBranch'];
         $query = $this->db->query("select name from hotel_branch_tb where branch_id = '$currentBranch'");

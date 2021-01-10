@@ -49,7 +49,7 @@
                                     </tr>
                                     <tr>
                                         <td class ='sidebarQty' data-toggle='tooltip' data-placement='top' title='Qty to order'>
-                                            <h6>".$orderedQty."pc(s)</h6>
+                                            <h6>".$orderedQty." pc(s)</h6>
                                         </td>
                                         <td class='sidebarItemPrice' data-toggle='tooltip' data-placement='top' title='Price'>
                                             <h6>₱".number_format($price,2)."</h6>
