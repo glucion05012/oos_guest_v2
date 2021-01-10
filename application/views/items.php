@@ -84,7 +84,9 @@
                                     </h4>
                                     <div class='card-body'>
                                         <h5 class='card-title'>$name</h5>
-                                        <p class='card-text'>$desc</p>
+                                        <div class='comment'>
+                                        $desc
+                                        </div>
                                     </div>
                                     <div class='d-flex flex-row d-flex justify-content-end bd-highlight mb-3 addtocartcardcontainer'>
                                         <div class='p-2 bd-highlight col-6 addtocartcardcolumn'>
