@@ -15,74 +15,105 @@ class PostController extends CI_Controller {
 	}
 	public function index(){
 		$data['getBranches'] =  $this->post_model->getBranches();// for branch selection
-		$data['getPromoCode'] =  $this->post_model->checkPromoCode();// do not remove
 		$this->load->view('templates/header');
 		$this->load->view('BranchSelection',$data);
-		$this->load->view('templates/footer', $data);
+		$this->load->view('templates/footer');
 	}
 	public function category()
 	{
-		$data['getBranch'] = $this->post_model->getBranchName(); //for branch name on breadcrumb
-		$data['getPromoCode'] =  $this->post_model->checkPromoCode();// do not remove
-		//$data['getBranches'] =  $this->post_model->getBranches();// for branch selection
-		$data['food_uncatmenu_tb'] =  $this->post_model->getMenuItems();
-		$this->load->view('templates/header', $data);
-		$this->load->view('home',$data);
-		$this->load->view('templates/footer');
+		if (isset($_SESSION['token'])){
+			//validate order qty vs available qty from db
+			foreach($_SESSION['trayItems'] as &$row){
+				if (isset($row[0]['menu_id'])){
+					$data['valid'] = $this->post_model->valid_tray_qty($row[0]['menu_id'], $row[0]['qty']);
+					if($data['valid'] == false){
+						$this->session->set_flashdata('errormsg', 'You can\'t order more than what is available');
+						unset($row[0]);
+					}
+				}
+			}
+			
+			$data['getBranch'] = $this->post_model->getBranchName(); //for getting selected branch's name
+			$data['food_uncatmenu_tb'] =  $this->post_model->getMenuItems();
+			$this->load->view('templates/header');
+			$this->load->view('home',$data);
+			$this->load->view('templates/sidebar', $data);
+			$this->load->view('templates/footer');
+		}else{
+			$this->index();
+		}
+
 	}
 	public function items($category)
 	{
-		$data['getBranch'] = $this->post_model->getBranchName(); //for branch name on breadcrumb
-		//$data['getBranches'] =  $this->post_model->getBranches();// for branch selection
-		$data['getPromoCode'] =  $this->post_model->checkPromoCode();// do not remove
-		$data['food_menu_tb'] =  $this->post_model->getCategoryItems($category);
-		$data['countBagItems'] = $this->post_model->countBagItems();
-		$data['getCart'] =  $this->post_model->getCart();
-		$this->load->view('templates/header', $data);
-		$this->load->view('items', $data);
-		$this->load->view('js/alerts');
-		$this->load->view('templates/footer');
+		
+		if (isset($_SESSION['token'])){
+
+			//validate order qty vs available qty from db
+			foreach($_SESSION['trayItems'] as &$row){
+				if (isset($row[0]['menu_id'])){
+					$data['valid'] = $this->post_model->valid_tray_qty($row[0]['menu_id'], $row[0]['qty']);
+					if($data['valid'] == false){
+						$this->session->set_flashdata('errormsg', 'You can\'t order more than what is available');
+						unset($row[0]);
+					}
+				}
+			}
+
+			$data['getBranch'] = $this->post_model->getBranchName(); //for getting selected branch's name
+			$data['food_menu_tb'] =  $this->post_model->getCategoryItems($category);
+			$this->load->view('templates/header');
+			$this->load->view('items', $data);
+			$this->load->view('templates/sidebar', $data);
+			$this->load->view('js/alerts');
+			$this->load->view('templates/footer');
+		}else{
+			$this->index();
+		}
 	}
 	public function checkout()
 	{
-		$data['getBranch'] = $this->post_model->getBranchName(); //for branch name on breadcrumb
-		//$data['getBranches'] =  $this->post_model->getBranches();// for branch selection
-		$this->form_validation->set_rules("subtotal","subtotal","required");
-		if($this->form_validation->run() === FALSE){
-			$data['getPromoCode'] =  $this->post_model->checkPromoCode();// do not remove
-			$data['food_uncatmenu_tb'] =  $this->post_model->getMenuItems();
-			$data['getCart'] =  $this->post_model->getCart();
+		if (isset($_SESSION['token'])){
+			$data['getBranch'] = $this->post_model->getBranchName(); //for getting selected branch's name
+			$this->form_validation->set_rules("subtotal","subtotal","required");
+			if($this->form_validation->run() === FALSE){
+				$data['food_uncatmenu_tb'] =  $this->post_model->getMenuItems();//for items display on checkout
 
-			$this->load->view('templates/header', $data);
-			$this->load->view('checkout',$data);
-			$this->load->view('js/alerts');
-			$this->load->view('templates/footer');
-			$this->load->view('js/checkout');
-			
-		}else{
-			// place order
-			
-			$data['refNo'] = $this->post_model->newOrder();
-			if ($data['refNo'] == FALSE){
-				$this->session->set_flashdata('errormsg', 'Ordered quantity cannot be larger than the available quantity. Please check your items!');
-				$url = $_SERVER['HTTP_REFERER'];
-                redirect($url);
+				$this->load->view('templates/header');
+				$this->load->view('checkout',$data);
+				$this->load->view('js/alerts');
+				$this->load->view('templates/footer');
+				$this->load->view('js/checkout');
+				
 			}else{
-				$referenceNo = json_encode($data['refNo'][0]['reference_number']);
-				$_SESSION['refNo'] =  trim($referenceNo, '"');
-				redirect("post-order");
+				// place order
+				
+				$data['refNo'] = $this->post_model->newOrder();
+				if ($data['refNo'] == FALSE){
+					$this->session->set_flashdata('errormsg', 'You can\'t order more than what is available');
+					$url = $_SERVER['HTTP_REFERER'];
+					redirect($url);
+				}else{
+					$referenceNo = json_encode($data['refNo'][0]['reference_number']);
+					$_SESSION['refNo'] =  trim($referenceNo, '"');
+					redirect("post-order");
+				}
 			}
+		}else{
+			$this->index();
 		}
+		
 	}
 	public function postOrderPage(){
-		
-		$data['getPromoCode'] =  $this->post_model->checkPromoCode();// do not remove
 
-		// echo json_encode($data['newOrder']);
-		
-		$this->load->view('templates/header');
-		$this->load->view('postOrder', $data);
-		$this->load->view('templates/footer',$data);
+		if (isset($_SESSION['token'])){
+			$this->load->view('templates/header');
+			$this->load->view('postOrder');
+			$this->load->view('templates/footer');
+		}else{
+			$this->index();
+		}
+
 	}
 	public function createSession(){
 		
@@ -92,14 +123,62 @@ class PostController extends CI_Controller {
 		$_SESSION['token'] = substr(str_shuffle($str_result), 0, 20); 
 		$_SESSION['selectedBranch'] = $this->input->post('selectedBranch');
 		
+		//array for sidebar items (tray)
+		$_SESSION['trayItems'] = array();
+
 		redirect('category');
 	}
 
 	public function add_cart(){
 
-		$this->post_model->addCart();
-		$this->session->set_flashdata('successmsg', 'Item Added to tray');
+		$postedMenuId = $this->input->post('menuid');
+		$postedQty = $this->input->post('quantity');
+		$postedItem = $this->input->post('menuitem');
+		$postedPrice = $this->input->post('price');
+		$postedImg = $this->input->post('img');
+		$postedCategory = $this->input->post('category');
+		$postedAQty = $this->input->post('aQty');
+
+		$menuExists = false;
+		//check if menu_id is already in the array
+		foreach($_SESSION['trayItems'] as &$row){
+			if (isset($row[0]['menu_id'])){
+				if ($row[0]['menu_id'] === $postedMenuId){ //if it exists, attempt to update qty
+					$newQty = ($row[0]['qty'] + $postedQty);
+
+					// validate order qty vs available qty locally 
+					if($newQty<=$postedAQty){
+						$row[0]['qty'] = $newQty; //update ordered qty from the array
+						$this->session->set_flashdata('successmsg', 'Item Added to tray');
+					}else{
+						$this->session->set_flashdata('errormsg', 'You can\'t order more than what is available');
+					}
+					$menuExists = true;
+				}
+			}
+
+		}
+
+		if($menuExists == false){
+			//adds posted data as an array row to $_SESSION['trayItems']
+			$newRow = array(
+				array(
+					"menu_id"=>$postedMenuId,
+					"item"=>$postedItem,
+					"qty"=>$postedQty,
+					"price"=>$postedPrice,
+					"image"=>$postedImg,
+					"category"=>$postedCategory
+				)
+			);
+			array_push($_SESSION['trayItems'], $newRow);
+			//assigning posted values as an array
+			$this->session->set_flashdata('successmsg', 'Item Added to tray');
+		}
+		
+		
 			
+		// refreshes the page
 		$url = $_SERVER['HTTP_REFERER'];
 		redirect($url);
 	}
@@ -109,35 +188,41 @@ class PostController extends CI_Controller {
 		echo json_encode($res);
 	}
 
+	//public function item_remove($id){
 	public function item_remove($id){
-		$this->post_model->item_remove($id);
+
+		foreach($_SESSION['trayItems'] as &$row){
+			if (isset($row[0]['menu_id'])){
+				if ($row[0]['menu_id'] === $id){ //if it exists in the row, update qty
+					unset($row[0]);
+					break;
+				}
+			}
+		}
 		
+		$this->session->set_flashdata('successmsg', 'Item removed from tray');
+		
+		// refreshes the page
 		$url = $_SERVER['HTTP_REFERER'];
-            redirect($url);
+		redirect($url);
 	}
 
 	public function updateBagItemQty(){
+
 		$this->post_model->updateBagItemQty();
 
-
-		// echo $_POST['menuid'];
-		// echo $_POST['inputQty'];
-		// echo $_SESSION['token'];
 	}
 
 	public function trackOrder(){
-		$data['getPromoCode'] =  $this->post_model->checkPromoCode();// do not remove
+
 		$data['getOrderDetails'] = $this->post_model->getOrderDetails();
-		//echo $_POST['orderRefNo'];
-		//echo json_encode($data['getOrderDetails']);
 
 		// proceed to load the next page if data is returned
 
-		
 		if($this->post_model->getOrderDetails()){
 			$this->load->view('templates/header');
 			$this->load->view('orderTracking', $data);
-			$this->load->view('templates/footer',$data);
+			$this->load->view('templates/footer');
 		}else{
 			$data['getBranches'] =  $this->post_model->getBranches();// for branch selection
 			$this->session->set_flashdata('successmsg', 'Order reference number not found!');
@@ -145,7 +230,7 @@ class PostController extends CI_Controller {
 			$this->load->view('templates/header');
 			$this->load->view('BranchSelection',$data);
 			$this->load->view('js/alerts');
-			$this->load->view('templates/footer',$data);
+			$this->load->view('templates/footer');
 		}
 	}
 }

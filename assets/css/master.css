@@ -252,19 +252,23 @@ button.btn-addtocart:hover {
     transition: .3s;
     cursor:pointer;
 }
-.btncardqty{
+.cardAQty{
+    padding-left:5px;
+    padding-top:3px;
+}
+/* .btncardqty{
     border-style: ridge;
     border-color: rgba(33, 37, 31, .6);
     background-color: #FFFFFF;
     color: rgba(33, 37, 31, .6);
-}
-.btncardqty:hover{
+} */
+/* .btncardqty:hover{
     border-style: ridge;
     border-color: rgba(33, 37, 31, .6);
     background-color: #FFFFFF;
     color: rgba(33, 37, 31, .6);
-}
-.input-group-itemcard{
+} */
+div.input-group.input-group-itemcard.px-0.input-group-sm.mb-3{
     padding:0px;
 }
 div.addtocartcardcontainer{
@@ -450,3 +454,98 @@ a.aremovefrombag .fa-trash:hover{
     color: rgba(33, 37, 31, .9);
 }
 /* checkout end */
+
+
+
+/* ks shopping bag begin */
+/* untoggled */
+#sidebarbtn{
+    transition: .3s;
+    position:fixed;
+    right:20px;
+    bottom:60px;
+    transition-delay: .3s;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+.sidebar {
+    height: 100%;
+    width: 400px;
+    position: fixed;
+    top: 0px;
+    right: -400px;
+    background-color: rgba(255, 255, 255, 0.96);
+    overflow-x: hidden;
+    transition: .3s;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    z-index:999;
+}
+/* toggled */
+#sidebarbtn.toggled{
+    transition: .3s;
+    position:fixed;
+    right:-105px;
+    bottom:60px;
+    transition-delay: .3s;
+}
+.sidebar.toggled{
+    height: 100%;
+    width: 400px;
+    position: fixed;
+    top: 0px;
+    right: 0px;
+    background-color: rgba(255, 255, 255, 0.96);
+    overflow-x: hidden;
+    transition: .3s;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    z-index:999;
+}
+/* static */
+td.sidebarQty{
+    width:60px;
+}
+/* td.sidebarItemPrice h6{
+    padding-left:6px;
+} */
+div.sidebarheader{
+    height:auto;
+}
+div.sidebarContainer{
+    height:100%;
+}
+button.checkoutbtn {
+    cursor: pointer;
+    border: none;
+    position: fixed;
+    bottom: 36px;
+    right: 16px;
+    z-index:5;
+}
+button.checkoutbtn:hover {
+    transition: .3s;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    z-index:5;
+}
+a.closebtn{
+    text-decoration: none;
+    position:absolute;
+    top: 0px;
+    right: 20px;
+    font-size: 36px;
+}
+a.closebtn:hover{
+    color: rgba(33, 37, 31, 1);
+    opacity: 60%;
+}
+button.closesidebarbtn{
+    width:100%;
+}
+.bag-items-list li img{
+    height: 70px;
+}
+.btn-sidebar-checkout{
+    width: 100%;
+}
+.btn-sidebar-checkout:hover{
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+/* shopping bag end */
