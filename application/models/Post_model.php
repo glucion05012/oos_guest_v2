@@ -241,7 +241,11 @@ class Post_model extends CI_Model{
                 //update qty of food_menu_tb
                 $currentMenuID = $row[0]['menu_id'];
                 $orderedQty = $row[0]['qty'];
-                $this->db->query("UPDATE food_menu_tb set quantity = ((SELECT quantity from food_menu_tb WHERE menu_id = '$currentMenuID')-$orderedQty) WHERE menu_id = '$currentMenuID' ");
+                $currentQtyQuery = $this->db->get_where('food_menu_tb', array('menu_id'=>$currentMenuID));
+                $currentQtyArray = $currentQtyQuery->row_array();
+                $currentQty = $currentQtyArray['quantity'] - $row[0]['qty'];
+                $this->db->query("UPDATE food_menu_tb set quantity = $currentQty WHERE menu_id = '$currentMenuID'");
+                //$this->db->query("UPDATE food_menu_tb set quantity = ((SELECT quantity from food_menu_tb WHERE menu_id = '$currentMenuID')-$orderedQty) WHERE menu_id = '$currentMenuID' ");
         
             }
         }
