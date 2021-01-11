@@ -8,7 +8,7 @@
                 <h6 style="display:inline;">Order Reference No: </h6>
                 <h2 style="display:inline;"><span class="badge badge-primary"><?php echo $_SESSION['refNo']; ?></span></h2>
                 <hr>
-                <p>Your order has been placed. You may visit our <a href="<?php echo $_SESSION['qr'] ?>">home page</a> to track your order using your <b>order reference number</b>.</p>
+                <p>Your order has been placed. You may visit our <a href="<?php echo base_url().$_SESSION['qr'] ?>">home page</a> to track your order using your <b>order reference number</b>.</p>
                 <p>Cancelling your order? please contact our staff by dialling "0" from our provided telephone.</p>
             </div>
         </div>

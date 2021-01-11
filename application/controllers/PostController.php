@@ -116,13 +116,16 @@ class PostController extends CI_Controller {
 
 	}
 	public function createSession(){
-		
 		session_start();
 		$str_result = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz!@#$%^&*()-+'; 
 		
 		$_SESSION['token'] = substr(str_shuffle($str_result), 0, 20); 
 		$_SESSION['selectedBranch'] = $this->input->post('selectedBranch');
 		
+
+		$_SESSION['qr'] = "oos?bcd=".$_GET['bcd']."&rmn=".$_GET['rmn'];
+		$_SESSION['roomNumber'] = $_GET['rmn'];
+
 		//array for sidebar items (tray)
 		$_SESSION['trayItems'] = array();
 
