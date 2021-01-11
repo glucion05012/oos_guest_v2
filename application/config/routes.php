@@ -1,9 +1,12 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-$route['default_controller'] = 'PostController';
+//$route['default_controller'] = 'PostController';
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
+
+$route['oos'] = 'PostController';
+
 $route['items'] = 'PostController/items';
 $route['items/checkout'] = 'PostController/checkout';
 $route['uncategorized'] = 'PostController/items';

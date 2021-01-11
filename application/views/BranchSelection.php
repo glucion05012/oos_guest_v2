@@ -1,6 +1,9 @@
         
         <!-- ks banner begin -->
-        
+        <?php 
+            $_SESSION['qr'] = $_SERVER['REQUEST_URI'];
+            $_SESSION['roomNumber'] = $_GET['rmn'];
+        ?>
         <div class="container-fluid branchSelectorContainer p-0 m-0"
         style='background:url("<?php echo base_url()."assets/images/Sogo-FNB-banner1-scaled.jpg";?>"); background-size:cover;
         background-position: center; background-repeat: no-repeat;'>
@@ -12,11 +15,12 @@
                             <label class="input-group-text" for="inputGroupSelect01">Branches</label>
                         </div>
                         <select class="custom-select" id="selectedBranch" name="selectedBranch"  data-toggle='tooltip' data-placement='top' title='Select a branch here' required>
-                            <option selected value="">Click here to choose</option>
                             <?php foreach ($getBranches as $branch) : ?>
-                                <option value="<?php echo $branch['branch_id']; ?>">
-                                    <?php echo $branch['name']; ?>
-                                </option>
+                                <?php if($_GET['bcd'] == $branch['code']): ?>
+                                    <option value="<?php echo $branch['branch_id']; ?>">
+                                        <?php echo $branch['name']; ?>
+                                    </option>
+                                <?php endif; ?>
                             <?php endforeach  ?>
                         </select>
                     </div>

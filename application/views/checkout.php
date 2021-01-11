@@ -3,7 +3,7 @@
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb mb-0">
                 <li class="breadcrumb-item">
-                <a class="card-link" href="<?php echo base_url(); ?>"><?php echo $getBranch['name']; ?></a>
+                <a class="card-link" href="<?php echo $_SESSION['qr'] ?>"><?php echo $getBranch['name']; ?></a>
                 </li>
                 <li class="breadcrumb-item"><a href="#">
                     <a class="card-link"  href="<?php echo base_url('category'); ?>">Categories</a>
@@ -210,12 +210,12 @@
                                         <h5>2. Contact Information</h5>
                                     </div>
                                         <div class="form-group form-check">
-                                            <input type="checkbox" class="form-check-input" id="checkedIn" name="checkedIn" value = "0">
-                                            <label class="form-check-label" for="checkedIn">Already checked in?</label>
+                                            <input type="hidden" class="form-check-input" id="checkedIn" name="checkedIn" value = "0">
+                                            <!-- <label class="form-check-label" for="checkedIn">Already checked in?</label> -->
                                         </div>
                                         <div class="form-group">
                                             <label for="roomNumber" >Room Number</label>
-                                            <input type="text" class="form-control" id="roomNumber" name="roomNo" readonly>
+                                            <input type="text" class="form-control" id="roomNumber" name="roomNo" value="<?php echo $_SESSION['roomNumber']; ?>" readonly>
                                         </div>
                                         <div class="form-group">
                                             <label for="customerName">Customer Name</label>

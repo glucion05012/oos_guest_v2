@@ -1,7 +1,7 @@
         <!-- ks breadcrumb begin -->
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb mb-0">
-                <li class="breadcrumb-item"><a class="card-link" href="<?php echo base_url(); ?>"><?php echo $getBranch['name']; ?></a></li>
+                <li class="breadcrumb-item"><a class="card-link" href="<?php echo $_SESSION['qr'] ?>"><?php echo $getBranch['name']; ?></a></li>
                 <li class="breadcrumb-item active" aria-current="page">Categories</li>
             </ol>
         </nav>
