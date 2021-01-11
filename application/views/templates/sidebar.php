@@ -79,8 +79,8 @@
                     <div class="col-9">
                         <h3 style="text-align:right;"><?php echo "₱ ".number_format($subtotal,2); ?></h3>
                     </div>
-                    <!-- <form class="col-12" action="<?= base_url('checkout'); ?>" method="post" accept-charset="utf-8"> -->
-                    <form class="col-12" action="<?php echo "checkout/"; ?>" method="post">
+                    
+                    <form class="col-12" action="<?= base_url('items/checkout'); ?>" method="post">
                         <button class="btn btn-lg s-primary-btn btn-sidebar-checkout" type="submit" name="button" style="margin-top:8px">Checkout</button>
                     </form>
                 </div>
