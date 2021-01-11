@@ -201,19 +201,6 @@ class Post_model extends CI_Model{
             $promoCode = '';
         }
 
-        
-        //Collects ordered items
-        $tempSession = $_SESSION['token'];
-        $selectBagItemsQuery = $this->db->query("SELECT 
-            food_menu_tb.name,
-            cart_list_tb.menu_id,
-            food_menu_tb.amount,
-            cart_list_tb.qty,
-            food_menu_tb.quantity
-            from cart_list_tb
-            left join food_menu_tb
-            on cart_list_tb.menu_id = food_menu_tb.menu_id WHERE token = '$tempSession'");
-
         //insert order query
         $orderData = array(
             'datetime_ordered' =>$date_log,
