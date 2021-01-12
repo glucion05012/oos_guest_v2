@@ -240,6 +240,9 @@
                         </div>
                     </div>
                     <div class="row mb-5">
+                        <!-- longlats -->
+                        <div id="longlat" ></div>
+                        
                         <button class="btn s-primary-btn mx-auto btn-lg col-10 col-lg-3 col-md-5" type="submit" name="button" value="placeOrder" data-toggle='tooltip' data-placement='top' title='Confirm Order'>Place Order</button>
                     </div>
                 </div>

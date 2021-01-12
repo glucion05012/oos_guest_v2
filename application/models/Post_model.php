@@ -215,7 +215,8 @@ class Post_model extends CI_Model{
             'room_no' => $this->input->post('roomNo'),
             'advance_order' => $checkinVal,
             'branch_id' => $_SESSION['selectedBranch'],
-            'reference_number' => $refNo
+            'reference_number' => $refNo,
+            'longlat' => $this->input->post('longlat')
         );
         // executes insert query
         $this->db->insert('orders_tb', $orderData);

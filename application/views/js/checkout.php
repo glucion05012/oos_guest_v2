@@ -1,5 +1,19 @@
 <script>
 $(document).ready(function(){
+
+    // get location LONGLAT
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(showPosition);
+        }
+        function showPosition(position) {
+            
+            var lat = position.coords.latitude;
+            var lon = position.coords.longitude;
+            var longlat = lat+","+lon;
+
+            $("#longlat").empty().prepend('<input type="hidden" name="longlat" value="'+longlat+'">');
+        }
+
     
     $('#promo_code').focusout(function(){
 
@@ -142,4 +156,6 @@ $(document).ready(function(){
             }
 
     });
+        
+
 </script>
