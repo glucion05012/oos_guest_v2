@@ -117,64 +117,6 @@ a.header-nav-link{
 
 
 
-/* ks shopping bag begin */
-#sidebarbtn{
-    transition: .5s;
-}
-.itemCount{
-    position: fixed;
-    bottom: 73px;
-    right: 31px;
-    z-index:6;
-}
-button.checkoutbtn {
-    cursor: pointer;
-    border: none;
-    position: fixed;
-    bottom: 36px;
-    right: 16px;
-    z-index:5;
-}
-button.checkoutbtn:hover {
-    transition: .3s;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-    z-index:5;
-}
-.sidebar {
-    height: 100%;
-    width: 0;
-    position: fixed;
-    top: 0;
-    right: 0;
-    background-color: rgba(255, 255, 255, 0.96);
-    overflow-x: hidden;
-    transition: .5s;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-}
-a.closebtn{
-    text-decoration: none;
-    position:absolute;
-    top: 0px;
-    right: 20px;
-    font-size: 36px;
-}
-a.closebtn:hover{
-    color: rgba(33, 37, 31, 1);
-    opacity: 60%;
-}
-button.closesidebarbtn{
-    width:100%;
-}
-.bag-items-list li img{
-    height: 70px;
-}
-.btn-sidebar-checkout{
-    width: 100%;
-}
-/* shopping bag end */
-
-
-
 /* ks category begin */
 #masonryContainer{
     @media only screen and (max-width: 600px){
@@ -256,18 +198,6 @@ button.btn-addtocart:hover {
     padding-left:5px;
     padding-top:3px;
 }
-/* .btncardqty{
-    border-style: ridge;
-    border-color: rgba(33, 37, 31, .6);
-    background-color: #FFFFFF;
-    color: rgba(33, 37, 31, .6);
-} */
-/* .btncardqty:hover{
-    border-style: ridge;
-    border-color: rgba(33, 37, 31, .6);
-    background-color: #FFFFFF;
-    color: rgba(33, 37, 31, .6);
-} */
 div.input-group.input-group-itemcard.px-0.input-group-sm.mb-3{
     padding:0px;
 }
@@ -498,6 +428,20 @@ a.aremovefrombag .fa-trash:hover{
     transition: .3s;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     z-index:999;
+}
+@media only screen and (max-width: 576px){
+    #mySidebar.sidebar.toggled{
+        height: 100%;
+        width: 100%;
+        position: fixed;
+        top: 0px;
+        right: 0px;
+        background-color: rgba(255, 255, 255, 0.96);
+        overflow-x: hidden;
+        transition: .3s;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+        z-index:999;
+    }
 }
 /* static */
 td.sidebarQty{
