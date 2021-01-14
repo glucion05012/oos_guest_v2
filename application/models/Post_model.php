@@ -100,8 +100,7 @@ class Post_model extends CI_Model{
         $query = $this->db->get_where('promo_codes_tb', array('promo_code'=>$_POST["promoCode"]));
         return $query->result_array();
     }
-    public function getOrderDetails(){
-        $orderRefNo = $this->input->post('orderRefNo');
+    public function getOrderDetails($orderRefNo){
         $query = $this->db->query("SELECT 
         orders_tb.name as customerName,
         hotel_branch_tb.name as branchName,

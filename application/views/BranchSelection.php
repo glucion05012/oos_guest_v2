@@ -33,7 +33,7 @@
         <!-- Modal -->
         <div class="modal fade" id="trackOrderModal" tabindex="-1" aria-labelledby="tOModalTitle"
         aria-hidden="true">
-            <form action="<?php echo base_url('track_order'); ?>" method="POST">
+            <form action="<?php echo base_url('track_order'); ?>" method="GET">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">

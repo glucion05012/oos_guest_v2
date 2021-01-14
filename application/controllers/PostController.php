@@ -217,12 +217,13 @@ class PostController extends CI_Controller {
 	}
 
 	public function trackOrder(){
-
-		$data['getOrderDetails'] = $this->post_model->getOrderDetails();
+		
+		$_SESSION['refNo'] = $_GET['orderRefNo'];
+		$data['getOrderDetails'] = $this->post_model->getOrderDetails($_SESSION['refNo']);
 
 		// proceed to load the next page if data is returned
 
-		if($this->post_model->getOrderDetails()){
+		if($this->post_model->getOrderDetails($_SESSION['refNo'])){
 			$this->load->view('templates/header');
 			$this->load->view('orderTracking', $data);
 			$this->load->view('templates/footer');
