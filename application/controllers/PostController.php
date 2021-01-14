@@ -14,6 +14,8 @@ class PostController extends CI_Controller {
 		// echo json_encode($data['test']);
 	}
 	public function index(){
+		$_SESSION['qr'] = "oos?bcd=".$_GET['bcd']."&rmn=".$_GET['rmn'];
+		
 		$data['getBranches'] =  $this->post_model->getBranches();// for branch selection
 		$this->load->view('templates/header');
 		$this->load->view('BranchSelection',$data);
