@@ -201,6 +201,10 @@ button.btn-addtocart:hover {
 div.input-group.input-group-itemcard.px-0.input-group-sm.mb-3{
     padding:0px;
 }
+.fix-rounded-right {
+    border-top-right-radius: 3px !important;
+    border-bottom-right-radius: 3px !important;
+}
 div.addtocartcardcontainer{
     margin-left:12px;
     margin-right:12px;
@@ -243,27 +247,7 @@ div.card.item-card:hover > div.addtocartcardcontainer > .addtocartcardcolumn > b
 div.card.item-card{
     width:98%;
     height:100%;
-    /* height:auto; */
 }
-/* @media only screen and (max-width: 575px){
-    div.card.item-card{
-        margin:auto;
-    }
-}
-@media only screen and (max-width: 400px){
-    div.card.item-card{
-        width:15rem;
-        margin-top:15px;
-        margin-bottom:15px;
-    }
-}
-@media only screen and (max-width: 300px){
-    div.card.item-card{
-        width:13rem;
-        margin-top:15px;
-        margin-bottom:15px;
-    }
-}  */
 
 div.card.item-card:hover{
     transition: .3s;
@@ -396,6 +380,7 @@ a.aremovefrombag .fa-trash:hover{
     bottom:60px;
     transition-delay: .3s;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    z-index:999;
 }
 .sidebar {
     height: 100%;

@@ -67,7 +67,7 @@
                     
                     echo"
                         <div class='col-lg-4 col-md-6 col-sm-6 col-12 my-3'>
-                            <form action='$url' method='post' accept-charset='utf-8'>
+                            <form action='$url' method='post' accept-charset='utf-8'class='needs-validation' novalidate>
                                 <div class='card item-card mx-auto'>
                                     <input type='hidden' name='token' value='$token'>
                                     <input type='hidden' name='branchid' value='$selectedBranch'>
@@ -89,12 +89,13 @@
                                         </div>
                                     </div>
                                     <div class='d-flex flex-row d-flex justify-content-end bd-highlight mb-3 addtocartcardcontainer'>
-                                        <div class='p-2 bd-highlight col-6 addtocartcardcolumn'>
+                                        <div class='p-2 flex-fill bd-highlight addtocartcardcolumn'>
                                             <div class='input-group input-group-itemcard px-0 input-group-sm mb-3'>
-                                                <input type='number' min='1' max='$aQty' name='quantity' class='form-control quantity' value='1' aria-label='Example text with button addon' aria-describedby='button-addon1' data-toggle='tooltip' data-placement='top' title='Quantity to add' required>
+                                                <input type='number' min='1' max='$aQty' name='quantity' class='form-control quantity$menuID' value='1' aria-label='Example text with button addon' aria-describedby='button-addon1' data-toggle='tooltip' data-placement='top' title='Quantity to add' required>
                                                 <div class='input-group-append' data-toggle='tooltip' data-placement='top' title='Quantity available'>
-                                                    <span class='input-group-text' id='basic-addon2'>/$aQty pcs</span>
+                                                    <span class='input-group-text fix-rounded-right' id='basic-addon2'>/$aQty pcs</span>
                                                 </div>
+                                                <div class='invalid-feedback'>Invalid quantity</div>
                                             </div>
                                         </div>
                                         <div class='p-2 bd-highlight addtocartcardcolumn'>
